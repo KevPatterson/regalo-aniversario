@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Para Ti</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --noche: #1c1730;
+    --noche-2: #241d3d;
+    --vino: #c1666b;
+    --rosa: #e8a598;
+    --crema: #f4ece2;
+    --lila: #b7a6d6;
+    --linea: rgba(244,236,226,0.14);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{
+    background:var(--noche);
+    color:var(--crema);
+    font-family:'Jost',sans-serif;
+    font-weight:300;
+    overflow-x:hidden;
+    scroll-behavior:smooth;
+  }
+  body{
+    background-image:
+      radial-gradient(1px 1px at 20% 30%, rgba(244,236,226,0.35) 0, transparent 100%),
+      radial-gradient(1px 1px at 70% 15%, rgba(244,236,226,0.25) 0, transparent 100%),
+      radial-gradient(1px 1px at 40% 70%, rgba(244,236,226,0.3) 0, transparent 100%),
+      radial-gradient(1px 1px at 85% 60%, rgba(244,236,226,0.2) 0, transparent 100%),
+      radial-gradient(1px 1px at 10% 85%, rgba(244,236,226,0.3) 0, transparent 100%),
+      linear-gradient(180deg, var(--noche) 0%, var(--noche-2) 100%);
+    background-attachment:fixed;
+  }
+  h1,h2,h3{font-family:'Cormorant Garamond',serif;font-weight:600;}
+  .max{max-width:480px;margin:0 auto;padding:0 28px;}
+
+  /* ---- ENTRADA ---- */
+  #entrada{
+    height:100vh;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;
+    position:relative;
+    cursor:pointer;
+  }
+  #entrada .eyebrow{
+    font-size:13px;letter-spacing:2px;color:var(--lila);margin-bottom:14px;
+  }
+  #entrada h1{
+    font-size:44px;color:var(--rosa);line-height:1.15;
+  }
+  #entrada .instr{
+    margin-top:34px;font-size:14px;color:var(--crema);opacity:0.55;
+  }
+  .corazon-tap{
+    width:14px;height:14px;background:var(--vino);
+    transform:rotate(45deg);
+    position:relative;margin-top:26px;
+    animation:latido 1.6s ease-in-out infinite;
+  }
+  .corazon-tap::before,.corazon-tap::after{
+    content:'';position:absolute;width:14px;height:14px;background:var(--vino);border-radius:50%;
+  }
+  .corazon-tap::before{left:-7px;}
+  .corazon-tap::after{top:-7px;}
+  @keyframes latido{
+    0%,100%{transform:rotate(45deg) scale(1);}
+    50%{transform:rotate(45deg) scale(1.18);}
+  }
+  #entrada.abierto{ animation: desvanecer 0.9s ease forwards; pointer-events:none; }
+  @keyframes desvanecer{ to{opacity:0; transform:scale(0.97);} }
+
+  main{display:none;}
+  main.visible{display:block; animation: aparecer 0.8s ease;}
+  @keyframes aparecer{ from{opacity:0;} to{opacity:1;} }
+
+  section{padding:70px 0 20px;}
+  .kicker{
+    font-size:12px;letter-spacing:1.5px;color:var(--lila);opacity:0.8;margin-bottom:10px;
+  }
+  .titulo-seccion{font-size:30px;color:var(--rosa);margin-bottom:6px;}
+  .sub{font-size:14px;color:var(--crema);opacity:0.6;margin-bottom:32px;line-height:1.5;}
+
+  /* ---- CONTADOR ---- */
+  #contador{text-align:center;}
+  .contador-caja{
+    display:flex;justify-content:center;gap:18px;flex-wrap:wrap;margin-top:10px;
+  }
+  .contador-num{
+    font-family:'Cormorant Garamond',serif;font-size:38px;color:var(--crema);
+  }
+  .contador-lbl{font-size:11px;letter-spacing:1px;color:var(--lila);margin-top:4px;}
+
+  /* ---- GALERIA ---- */
+  .galeria{
+    display:flex;overflow-x:auto;gap:14px;padding:6px 0 18px;
+    scroll-snap-type:x mandatory;
+    -ms-overflow-style:none;scrollbar-width:none;
+  }
+  .galeria::-webkit-scrollbar{display:none;}
+  .foto{
+    flex:0 0 78%;scroll-snap-align:center;
+    border-radius:2px;overflow:hidden;
+    position:relative;
+    border:1px solid var(--linea);
+  }
+  .foto img{width:100%;height:340px;object-fit:cover;display:block;filter:saturate(0.9);}
+  .foto .cap{
+    position:absolute;bottom:0;left:0;right:0;
+    padding:16px 14px 12px;
+    background:linear-gradient(0deg, rgba(28,23,48,0.92), transparent);
+    font-size:13px;font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--crema);
+  }
+
+  /* ---- TIMELINE ---- */
+  .linea-tiempo{position:relative;padding-left:26px;}
+  .linea-tiempo::before{
+    content:'';position:absolute;left:5px;top:6px;bottom:6px;width:1px;background:var(--linea);
+  }
+  .evento{position:relative;padding-bottom:38px;}
+  .evento:last-child{padding-bottom:0;}
+  .evento::before{
+    content:'';position:absolute;left:-26px;top:5px;width:9px;height:9px;border-radius:50%;
+    background:var(--vino);border:2px solid var(--noche);
+  }
+  .evento .fecha{font-size:11px;letter-spacing:1px;color:var(--lila);margin-bottom:4px;}
+  .evento h3{font-size:20px;color:var(--crema);margin-bottom:4px;}
+  .evento p{font-size:14px;line-height:1.5;color:var(--crema);opacity:0.65;}
+
+  /* ---- CARTA ---- */
+  #carta{
+    background:var(--noche-2);
+    margin:0 0;
+    border-top:1px solid var(--linea);
+    border-bottom:1px solid var(--linea);
+  }
+  .carta-texto{
+    font-family:'Cormorant Garamond',serif;font-size:19px;line-height:1.75;color:var(--crema);
+  }
+  .carta-texto p{margin-bottom:16px;}
+  .firma{margin-top:20px;font-style:italic;color:var(--rosa);font-size:20px;}
+
+  /* ---- SORPRESA ---- */
+  #sorpresa{text-align:center;}
+  .btn-sorpresa{
+    background:none;border:1px solid var(--vino);color:var(--rosa);
+    font-family:'Jost',sans-serif;font-size:13px;letter-spacing:1px;
+    padding:14px 26px;border-radius:2px;cursor:pointer;
+  }
+  .revelacion{
+    margin-top:24px;font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--crema);
+    display:none;line-height:1.5;
+  }
+  .revelacion.visible{display:block;animation:aparecer 0.7s ease;}
+
+  /* ---- MUSICA FLOTANTE ---- */
+  #musica-toggle{
+    position:fixed;bottom:20px;right:20px;
+    width:46px;height:46px;border-radius:50%;
+    background:var(--noche-2);border:1px solid var(--linea);
+    display:flex;align-items:center;justify-content:center;
+    cursor:pointer;z-index:50;
+    box-shadow:0 4px 14px rgba(0,0,0,0.3);
+  }
+  #musica-toggle svg{width:18px;height:18px;fill:var(--rosa);}
+
+  footer{
+    text-align:center;padding:50px 0 40px;
+    font-size:12px;color:var(--crema);opacity:0.4;letter-spacing:1px;
+  }
+</style>
+</head>
+<body>
+
+  <div id="entrada" onclick="abrir()">
+    <div class="eyebrow">UN REGALO PARA</div>
+    <h1>[Nombre de ella]</h1>
+    <div class="instr">toca para abrir</div>
+    <div class="corazon-tap"></div>
+  </div>
+
+  <main id="contenido">
+
+    <section id="contador">
+      <div class="max">
+        <div class="kicker">DESDE EL [FECHA DE ANIVERSARIO]</div>
+        <div class="titulo-seccion">Llevamos juntos</div>
+        <div class="contador-caja">
+          <div><div class="contador-num" id="dias">000</div><div class="contador-lbl">DÍAS</div></div>
+          <div><div class="contador-num" id="horas">00</div><div class="contador-lbl">HORAS</div></div>
+          <div><div class="contador-num" id="mins">00</div><div class="contador-lbl">MIN</div></div>
+          <div><div class="contador-num" id="segs">00</div><div class="contador-lbl">SEG</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="galeria-sec">
+      <div class="max">
+        <div class="kicker">NOSOTROS</div>
+        <div class="titulo-seccion">Algunos momentos</div>
+        <div class="sub">Desliza para ver más</div>
+      </div>
+      <div class="galeria">
+        <div class="foto"><img src="https://picsum.photos/seed/nosotros1/500/700" alt="Foto 1"><div class="cap">Placeholder — cambiar por foto real</div></div>
+        <div class="foto"><img src="https://picsum.photos/seed/nosotros2/500/700" alt="Foto 2"><div class="cap">Placeholder — cambiar por foto real</div></div>
+        <div class="foto"><img src="https://picsum.photos/seed/nosotros3/500/700" alt="Foto 3"><div class="cap">Placeholder — cambiar por foto real</div></div>
+        <div class="foto"><img src="https://picsum.photos/seed/nosotros4/500/700" alt="Foto 4"><div class="cap">Placeholder — cambiar por foto real</div></div>
+      </div>
+    </section>
+
+    <section id="historia">
+      <div class="max">
+        <div class="kicker">NUESTRA HISTORIA</div>
+        <div class="titulo-seccion">Cómo empezó todo</div>
+        <div class="linea-tiempo">
+          <div class="evento">
+            <div class="fecha">[FECHA]</div>
+            <h3>El primer día</h3>
+            <p>Placeholder: cuenta cómo se conocieron o el primer mensaje que se escribieron.</p>
+          </div>
+          <div class="evento">
+            <div class="fecha">[FECHA]</div>
+            <h3>La primera cita</h3>
+            <p>Placeholder: dónde fueron, qué recuerdas de ese día.</p>
+          </div>
+          <div class="evento">
+            <div class="fecha">[FECHA]</div>
+            <h3>Un momento especial</h3>
+            <p>Placeholder: un viaje, una sorpresa, algo que marcó la relación.</p>
+          </div>
+          <div class="evento">
+            <div class="fecha">HOY</div>
+            <h3>Y seguimos aquí</h3>
+            <p>Placeholder: cierre sobre el presente y lo que viene.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="carta">
+      <div class="max">
+        <div class="kicker">PARA TI</div>
+        <div class="titulo-seccion">Una carta</div>
+        <div class="carta-texto">
+          <p>Placeholder: aquí va el mensaje personal, en tus propias palabras.</p>
+          <p>Puede hablar de por qué hiciste esto, qué sientes, o algo que nunca le has dicho directamente.</p>
+          <div class="firma">— [Tu nombre]</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="sorpresa">
+      <div class="max">
+        <div class="kicker">ANTES DE IRTE</div>
+        <div class="titulo-seccion">No toques este botón</div>
+        <button class="btn-sorpresa" onclick="revelar()">tócalo de todas formas</button>
+        <div class="revelacion" id="revelacion-texto">
+          Placeholder: mensaje sorpresa, una promesa, o una invitación a algo (una cita, un regalo físico, etc.)
+        </div>
+      </div>
+    </section>
+
+    <footer>hecho con cariño, para ti</footer>
+
+  </main>
+
+  <div id="musica-toggle" onclick="toggleMusica()" title="Música">
+    <svg id="icono-musica" viewBox="0 0 24 24"><path d="M9 18V5l12-2v13M9 18a3 3 0 1 1-6 0 3 3 0 0 1 6 0zm12-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" fill="none" stroke-width="1.5" stroke="currentColor"/></svg>
+  </div>
+
+  <script>
+    function abrir(){
+      document.getElementById('entrada').classList.add('abierto');
+      setTimeout(()=>{
+        document.getElementById('entrada').style.display='none';
+        document.getElementById('contenido').classList.add('visible');
+      }, 850);
+    }
+
+    function revelar(){
+      document.getElementById('revelacion-texto').classList.add('visible');
+    }
+
+    function toggleMusica(){
+      alert('Aquí conectas tu archivo de audio (ver notas de personalización).');
+    }
+
+    // --- Contador de tiempo juntos ---
+    // Cambia esta fecha por la fecha de aniversario real: año, mes(0-11), día, hora, minuto
+    const inicio = new Date(2023, 0, 1, 0, 0);
+
+    function actualizarContador(){
+      const ahora = new Date();
+      let dif = ahora - inicio;
+      if(dif < 0) dif = 0;
+      const dias = Math.floor(dif / (1000*60*60*24));
+      const horas = Math.floor((dif / (1000*60*60)) % 24);
+      const mins = Math.floor((dif / (1000*60)) % 60);
+      const segs = Math.floor((dif / 1000) % 60);
+      document.getElementById('dias').textContent = String(dias).padStart(3,'0');
+      document.getElementById('horas').textContent = String(horas).padStart(2,'0');
+      document.getElementById('mins').textContent = String(mins).padStart(2,'0');
+      document.getElementById('segs').textContent = String(segs).padStart(2,'0');
+    }
+    actualizarContador();
+    setInterval(actualizarContador, 1000);
+  </script>
+
+</body>
+</html>
