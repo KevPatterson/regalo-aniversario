@@ -8,8 +8,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root{
-    --noche: #1c1730;
-    --noche-2: #241d3d;
+    --noche: #7d0309;
+    --noche-2: #410205;
     --vino: #c1666b;
     --rosa: #e8a598;
     --crema: #f4ece2;
@@ -56,19 +56,14 @@
     margin-top:34px;font-size:14px;color:var(--crema);opacity:0.55;
   }
   .corazon-tap{
-    width:14px;height:14px;background:var(--vino);
-    transform:rotate(45deg);
+    display:inline-block;
+    font-size:28px;line-height:1;
     position:relative;margin-top:26px;
     animation:latido 1.6s ease-in-out infinite;
   }
-  .corazon-tap::before,.corazon-tap::after{
-    content:'';position:absolute;width:14px;height:14px;background:var(--vino);border-radius:50%;
-  }
-  .corazon-tap::before{left:-7px;}
-  .corazon-tap::after{top:-7px;}
   @keyframes latido{
-    0%,100%{transform:rotate(45deg) scale(1);}
-    50%{transform:rotate(45deg) scale(1.18);}
+    0%,100%{transform:scale(1);}
+    50%{transform:scale(1.18);}
   }
   #entrada.abierto{ animation: desvanecer 0.9s ease forwards; pointer-events:none; }
   @keyframes desvanecer{ to{opacity:0; transform:scale(0.97);} }
@@ -176,10 +171,11 @@
 <body>
 
   <div id="entrada" onclick="abrir()">
-    <div class="eyebrow">UN REGALO PARA</div>
-    <h1>Warner</h1>
+    <div class="eyebrow">UN RECUERDITO CON AMOR PARA</div>
+    <h1>Walner</h1>
+    <div class="eyebrow">(Para cuando falte la memoria queden las fotografías)</div>
     <div class="instr">toca para abrir</div>
-    <div class="corazon-tap"></div>
+    <div class="corazon-tap">🤍✨🤎</div>
   </div>
 
   <main id="contenido">
