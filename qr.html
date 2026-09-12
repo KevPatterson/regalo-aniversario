@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Generar QR</title>
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+<style>
+  body{
+    font-family:sans-serif;background:#1c1730;color:#f4ece2;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    min-height:100vh;margin:0;padding:20px;text-align:center;
+  }
+  input{
+    width:100%;max-width:360px;padding:12px 14px;font-size:15px;
+    border-radius:4px;border:1px solid #444;margin-bottom:16px;
+    background:#241d3d;color:#f4ece2;
+  }
+  button{
+    padding:12px 26px;font-size:14px;border:1px solid #c1666b;background:none;
+    color:#e8a598;border-radius:4px;cursor:pointer;margin-bottom:24px;
+  }
+  #qr-canvas{background:#fff;padding:16px;border-radius:8px;}
+  a.descargar{color:#e8a598;font-size:13px;margin-top:14px;display:inline-block;}
+</style>
+</head>
+<body>
+  <h2>Generador de QR</h2>
+  <p style="opacity:0.6;font-size:13px;max-width:340px;">Pega aquí el link de tu página (el que te dio GitHub Pages) y genera el QR para imprimir o compartir.</p>
+  <input id="url-input" type="text" placeholder="https://tu-usuario.github.io/regalo-para-ella/">
+  <button onclick="generar()">Generar QR</button>
+  <canvas id="qr-canvas"></canvas>
+  <a class="descargar" id="link-descarga" style="display:none;" download="qr-regalo.png">Descargar imagen</a>
+
+  <script>
+    function generar(){
+      const url = document.getElementById('url-input').value.trim();
+      if(!url) return;
+      const canvas = document.getElementById('qr-canvas');
+      QRCode.toCanvas(canvas, url, { width: 260, margin: 2, color: { dark:'#1c1730', light:'#ffffff' } }, function(error){
+        if(error) console.error(error);
+        const link = document.getElementById('link-descarga');
+        link.href = canvas.toDataURL('image/png');
+        link.style.display = 'inline-block';
+      });
+    }
+  </script>
+</body>
+</html>
