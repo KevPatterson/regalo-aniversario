@@ -198,9 +198,20 @@
     transition:left 0.25s ease, top 0.25s ease;
   }
   #mensaje-burla{
-    margin-top:12px;text-align:center;font-size:12px;color:var(--lila);
-    letter-spacing:0.5px;opacity:0.9;min-height:18px;
+    margin-top:16px;text-align:center;font-size:15px;color:var(--crema);
+    letter-spacing:0.5px;opacity:0.95;min-height:22px;
+    background:rgba(244,236,226,0.04);border:1px solid var(--linea);
+    border-radius:6px;padding:10px 14px;line-height:1.5;
+    display:none;align-items:center;justify-content:center;
   }
+  #mensaje-si{
+    display:none;margin-top:18px;padding:18px 16px;border:1px solid var(--linea);
+    border-radius:6px;background:rgba(22, 10, 12, 0.18);text-align:center;
+    font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--crema);
+    line-height:1.4;
+  }
+  #mensaje-si.visible{display:block;animation:aparecer 0.6s ease;}
+  #mensaje-si svg{width:18px;height:18px;vertical-align:middle;fill:var(--vino);margin-right:6px;}
 
   /* ---- MUSICA FLOTANTE ---- */
   #musica-toggle{
@@ -338,6 +349,10 @@
           <button id="btn-no" class="btn-no" type="button">No</button>
         </div>
         <p id="mensaje-burla">¡ni lo intentes! 🏃💨</p>
+        <div id="mensaje-si" aria-live="polite">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7.5-4.45-10.5-9.03C.65 9.7 2.04 5 6.47 5c2.2 0 3.42 1.18 4.12 2.16C11.3 6.18 12.52 5 14.73 5c4.43 0 5.82 4.7 4.97 6.97C19.5 16.55 12 21 12 21Z"/></svg>
+          Sabía que dirías que sí 💙
+        </div>
       </div>
     </section>
 
@@ -390,14 +405,43 @@
     function revelar(){
       document.getElementById('revelacion-texto').classList.add('visible');
       document.getElementById('zona-botones').classList.add('visible');
-      document.getElementById('mensaje-burla').classList.add('visible');
     }
 
     const frasesBurla = [
       '¡ni lo intentes! 🏃💨',
       'no tan rápido...',
       'ese botón no existe para ti 😌',
-      'inténtalo de nuevo 💙'
+      'inténtalo de nuevo 💙',
+      'te lo dije: ese botón no es tuyo 😏',
+      'poco a poco, que eso no se toca sin permiso 😜',
+      'mejor deja el botón y acepta la verdad 💞',
+      'no huyas de lo bonito, vuelve aquí 💖',
+      'ese botón ya está cansado de correr 😅',
+      'se te ve muy decidido, pero yo más 😌',
+      'yo no me rindo, tú tampoco 😘',
+      'eres persistente, te lo concedo 💫',
+      'lo que más me gusta es que no te rindes 🤭',
+      'ese botón está intentando escapar del destino 💘',
+      'no, no, no... mejor ven aquí y di que sí 😍',
+      'vuelve a intentarlo, yo te esperaré con amor 💙',
+      'si no lo tocas, no pasa nada... pero si lo tocas, te vuelve a escapar 🙃',
+      'te estás esforzando mucho por no aceptar, y me gusta 😏',
+      'mira qué difícil te está poniendo esto el botón 😅',
+      'pareces un poco obsesivo con ese botón 🤭',
+      'ni con el dedo puedes dejarme ir 😌',
+      'esto ya parece un juego de persecución 💞',
+      'yo sé que al final dirás que sí ❤️',
+      'este botón no va a ganar esta vez 💍',
+      'no te preocupes, ya te estoy robando una sonrisa 😌',
+      'no tan cerca, que todavía te tengo atrapada en mi corazón 💖',
+      'el botón huye, pero mi amor te alcanza 😊',
+      'vámonos de una vez por la respuesta correcta 💞',
+      'el reto está en aceptarlo, no en correr 😘',
+      'ese “No” te queda muy corto para lo que siento 💫',
+      'todavía no te rindes, y yo tampoco 😄',
+      'el botón no sabe que ya te gané 💖',
+      'sigue intentando, pero yo sé el final 😍',
+      'todavía no me quiero ir sin un sí ✨'
     ];
 
     function cambiarMensajeBurla(){
@@ -407,28 +451,72 @@
       mensaje.textContent = frase;
     }
 
-    function moverBotonNo(){
+    function moverBotonNo(mostrarMensaje = false){
       const zona = document.getElementById('zona-botones');
       const btnNo = document.getElementById('btn-no');
-      if (!zona || !btnNo) return;
+      const btnSi = document.querySelector('.btn-si');
+      if (!zona || !btnNo || !btnSi) return;
 
       const zonaRect = zona.getBoundingClientRect();
       const btnRect = btnNo.getBoundingClientRect();
+      const btnSiRect = btnSi.getBoundingClientRect();
+      const btnSiLocal = {
+        left: btnSiRect.left - zonaRect.left + 16,
+        top: btnSiRect.top - zonaRect.top + 16,
+        right: btnSiRect.right - zonaRect.left - 16,
+        bottom: btnSiRect.bottom - zonaRect.top - 16,
+        width: btnSiRect.width - 32,
+        height: btnSiRect.height - 32
+      };
+
       const maxLeft = Math.max(zonaRect.width - btnRect.width, 0);
       const maxTop = Math.max(zonaRect.height - btnRect.height, 0);
 
-      const left = Math.random() * maxLeft;
-      const top = Math.random() * maxTop;
+      let left = 0;
+      let top = 0;
+      let encontrado = false;
+
+      for (let intento = 0; intento < 20; intento++) {
+        left = Math.random() * maxLeft;
+        top = Math.random() * maxTop;
+
+        const rectNo = {
+          left: left,
+          top: top,
+          right: left + btnRect.width,
+          bottom: top + btnRect.height
+        };
+
+        const haySolapamiento = !(rectNo.right < btnSiLocal.left || rectNo.left > btnSiLocal.right || rectNo.bottom < btnSiLocal.top || rectNo.top > btnSiLocal.bottom);
+
+        if (!haySolapamiento) {
+          encontrado = true;
+          break;
+        }
+      }
+
+      if (!encontrado) {
+        left = 18;
+        top = zonaRect.height - btnRect.height - 18;
+      }
 
       btnNo.style.left = left + 'px';
       btnNo.style.top = top + 'px';
       btnNo.style.transform = 'none';
-      cambiarMensajeBurla();
+
+      if (mostrarMensaje) {
+        cambiarMensajeBurla();
+      }
     }
 
     function responderSi(){
-      // aquí va la reacción al aceptar
-      alert('Sabía que ibas a decir que si ;)');
+      const zona = document.getElementById('zona-botones');
+      const burla = document.getElementById('mensaje-burla');
+      const mensaje = document.getElementById('mensaje-si');
+
+      if (zona) zona.classList.remove('visible');
+      if (burla) burla.classList.remove('visible');
+      if (mensaje) mensaje.classList.add('visible');
     }
 
     const btnNo = document.getElementById('btn-no');
@@ -438,7 +526,7 @@
         if (!zona || !zona.classList.contains('visible')) return;
 
         evento.preventDefault();
-        moverBotonNo();
+        moverBotonNo(true);
       }, { passive: false });
     }
 
@@ -456,7 +544,7 @@
       const distancia = Math.hypot(toque.clientX - centroX, toque.clientY - centroY);
 
       if (distancia < 90) {
-        moverBotonNo();
+        moverBotonNo(false);
       }
     }, { passive: true });
 
