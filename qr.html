@@ -6,58 +6,308 @@
 <title>Generar QR</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
+  :root{
+    --fondo:#1c1730;
+    --panel:#241d3d;
+    --texto:#f4ece2;
+    --rosa:#e8a598;
+    --vino:#c1666b;
+  }
   body{
-    font-family:sans-serif;background:#1c1730;color:#f4ece2;
+    font-family:sans-serif;background:var(--fondo);color:var(--texto);
     display:flex;flex-direction:column;align-items:center;justify-content:center;
     min-height:100vh;margin:0;padding:20px;text-align:center;
   }
+  .panel{
+    width:100%;max-width:420px;background:rgba(36,29,61,0.72);border:1px solid rgba(232,165,152,0.18);
+    border-radius:18px;padding:24px 20px 20px;box-shadow:0 18px 50px rgba(0,0,0,0.25);
+    backdrop-filter: blur(8px);
+  }
+  h2{margin:0 0 8px;font-size:28px;}
+  .copy{opacity:0.72;font-size:13px;line-height:1.5;max-width:340px;margin:0 auto 18px;}
+  .campos{
+    display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;
+  }
   input{
-    width:100%;max-width:360px;padding:12px 14px;font-size:15px;
-    border-radius:4px;border:1px solid #444;margin-bottom:16px;
-    background:#241d3d;color:#f4ece2;
+    width:100%;padding:12px 14px;font-size:15px;
+    border-radius:12px;border:1px solid rgba(232,165,152,0.2);
+    background:var(--panel);color:var(--texto);outline:none;
   }
+  input:focus{border-color:var(--rosa);box-shadow:0 0 0 3px rgba(232,165,152,0.14);}
+  .full{grid-column:1 / -1;}
+  .toggle{
+    grid-column:1 / -1;display:flex;align-items:center;justify-content:center;gap:10px;
+    font-size:13px;opacity:0.9;margin:2px 0 2px;
+  }
+  .toggle input{width:auto;margin:0;accent-color:var(--rosa);}
   button{
-    padding:12px 26px;font-size:14px;border:1px solid #c1666b;background:none;
-    color:#e8a598;border-radius:4px;cursor:pointer;margin-bottom:24px;
+    padding:12px 26px;font-size:14px;border:1px solid var(--vino);background:linear-gradient(180deg, rgba(193,102,107,0.24), rgba(193,102,107,0.08));
+    color:var(--texto);border-radius:999px;cursor:pointer;margin-bottom:20px;
   }
+  .qr-wrap{position:relative;width:260px;height:260px;margin:0 auto 8px;}
   #qr-canvas{
-    background:#fff;padding:16px;border-radius:8px;
+    background:#fff;padding:16px;border-radius:14px;overflow:hidden;
     width:260px;height:260px;
     display:flex;align-items:center;justify-content:center;
   }
   #qr-canvas canvas, #qr-canvas img{display:block;max-width:100%;height:auto;}
+  #qr-canvas img{width:100%;object-fit:contain;}
+  .heart-overlay{
+    position:absolute;left:50%;top:50%;width:72px;height:72px;transform:translate(-50%,-50%);
+    display:none;align-items:center;justify-content:center;pointer-events:none;
+    background:rgba(244,236,226,0.94);border-radius:22px;box-shadow:0 8px 22px rgba(28,23,48,0.18);
+  }
+  .heart-overlay.visible{display:flex;}
+  .heart-overlay span{font-size:42px;line-height:1;color:var(--vino);transform:translateY(-2px);}
+  .nota{font-size:12px;opacity:0.65;margin:10px auto 0;max-width:320px;line-height:1.45;}
   a.descargar{color:#e8a598;font-size:13px;margin-top:14px;display:inline-block;}
 </style>
 </head>
 <body>
-  <h2>Generador de QR</h2>
-  <p style="opacity:0.6;font-size:13px;max-width:340px;">Pega aquí el link de tu página (el que te dio GitHub Pages, Netlify, Vercel u otro servicio de hosting) y genera el QR para imprimir o compartir.</p>
-  <input id="url-input" type="text" placeholder="https://github.com/KevPatterson/regalo-aniversario">
-  <button onclick="generar()">Generar QR</button>
-  <div id="qr-canvas"></div>
-  <a class="descargar" id="link-descarga" style="display:none;" download="qr-regalo.png">Descargar imagen</a>
+  <div class="panel">
+    <h2>Generador de QR</h2>
+    <p class="copy">Personaliza el texto y los colores, genera el QR y descarga una imagen lista para imprimir.</p>
+    <div class="campos">
+      <input id="url-input" class="full" type="text" placeholder="https://github.com/KevPatterson/regalo-aniversario">
+      <input id="titulo-input" type="text" placeholder="Para ti" value="Para ti">
+      <input id="mensaje-input" type="text" placeholder="Escanéame" value="Escanéame">
+      <input id="color-input" type="color" value="#1c1730" aria-label="Color del QR">
+      <input id="fondo-input" type="color" value="#ffffff" aria-label="Color de fondo">
+      <label class="toggle"><input id="corazon-input" type="checkbox" checked> Corazón en el centro</label>
+    </div>
+    <button onclick="generar()">Generar QR</button>
+    <div class="qr-wrap">
+      <div id="qr-canvas"></div>
+      <div id="heart-overlay" class="heart-overlay" aria-hidden="true"><span>♥</span></div>
+    </div>
+    <div class="nota">La descarga incluye un marco con el mensaje y los colores que elijas. El corazón central funciona mejor que una forma de corazón completa para que el QR siga escaneando bien.</div>
+    <a class="descargar" id="link-descarga" style="display:none;" download="qr-regalo.png">Descargar imagen</a>
+  </div>
 
   <script>
     function generar(){
       const url = document.getElementById('url-input').value.trim();
       if(!url) return;
+      const titulo = document.getElementById('titulo-input').value.trim() || 'Para ti';
+      const mensaje = document.getElementById('mensaje-input').value.trim() || 'Escanéame';
+      const colorDark = document.getElementById('color-input').value;
+      const colorLight = document.getElementById('fondo-input').value;
+      const corazonActivo = document.getElementById('corazon-input').checked;
       const canvas = document.getElementById('qr-canvas');
       canvas.innerHTML = '';
-      new QRCode(canvas, {
+      const qrcodeHost = document.createElement('div');
+      qrcodeHost.style.position = 'absolute';
+      qrcodeHost.style.left = '-9999px';
+      qrcodeHost.style.top = '-9999px';
+      document.body.appendChild(qrcodeHost);
+
+      new QRCode(qrcodeHost, {
         text: url,
         width: 1024,
         height: 1024,
-        colorDark: '#1c1730',
-        colorLight: '#ffffff',
-        correctLevel: QRCode.CorrectLevel.M
+        colorDark,
+        colorLight,
+        correctLevel: QRCode.CorrectLevel.H
       });
 
-      const renderedCanvas = canvas.querySelector('canvas');
+      const renderedCanvas = qrcodeHost.querySelector('canvas');
       const link = document.getElementById('link-descarga');
       if (renderedCanvas) {
-        link.href = renderedCanvas.toDataURL('image/png');
+        const exportCanvas = document.createElement('canvas');
+        exportCanvas.width = 1600;
+        exportCanvas.height = 1900;
+        const ctx = exportCanvas.getContext('2d');
+
+        ctx.fillStyle = '#f4ece2';
+        ctx.fillRect(0, 0, exportCanvas.width, exportCanvas.height);
+
+        const pad = 120;
+        const qrSize = 1200;
+        const qrX = (exportCanvas.width - qrSize) / 2;
+        const qrY = 320;
+
+        ctx.fillStyle = colorLight;
+        roundRect(ctx, 70, 70, exportCanvas.width - 140, exportCanvas.height - 140, 44);
+        ctx.fill();
+
+        ctx.strokeStyle = colorDark;
+        ctx.lineWidth = 8;
+        ctx.stroke();
+
+        ctx.fillStyle = colorDark;
+        ctx.textAlign = 'center';
+        ctx.font = '700 86px sans-serif';
+        ctx.fillText(titulo, exportCanvas.width / 2, 180);
+
+        ctx.font = '400 42px sans-serif';
+        ctx.globalAlpha = 0.78;
+        ctx.fillText(mensaje, exportCanvas.width / 2, 250);
+        ctx.globalAlpha = 1;
+
+        ctx.drawImage(renderedCanvas, qrX, qrY, qrSize, qrSize);
+        if (corazonActivo) {
+          drawHeartBadge(ctx, exportCanvas.width / 2, qrY + qrSize / 2, 150, colorLight, colorDark);
+        }
+
+        ctx.font = '400 28px sans-serif';
+        ctx.globalAlpha = 0.7;
+        ctx.fillText(url, exportCanvas.width / 2, 1640);
+        ctx.globalAlpha = 1;
+
+        link.href = exportCanvas.toDataURL('image/png');
         link.style.display = 'inline-block';
+
+        const preview = new Image();
+        preview.alt = 'Vista previa del QR final';
+        preview.src = link.href;
+        canvas.appendChild(preview);
       }
+
+      qrcodeHost.remove();
+    }
+
+    function roundRect(ctx, x, y, width, height, radius) {
+      const r = Math.min(radius, width / 2, height / 2);
+      ctx.beginPath();
+      ctx.moveTo(x + r, y);
+      ctx.arcTo(x + width, y, x + width, y + height, r);
+      ctx.arcTo(x + width, y + height, x, y + height, r);
+      ctx.arcTo(x, y + height, x, y, r);
+      ctx.arcTo(x, y, x + width, y, r);
+      ctx.closePath();
+    }
+
+    function drawHeartBadge(ctx, centerX, centerY, size, backgroundColor, heartColor) {
+      function ajustarColor(hex, porcentaje) {
+        const limpio = hex.replace('#', '');
+        const expandido = limpio.length === 3
+          ? limpio.split('').map((caracter) => caracter + caracter).join('')
+          : limpio;
+        const numero = parseInt(expandido, 16);
+        const r = (numero >> 16) & 255;
+        const g = (numero >> 8) & 255;
+        const b = numero & 255;
+        const factor = porcentaje / 100;
+        const ajustar = (canal) => {
+          const siguiente = Math.round(canal + (255 * factor));
+          return Math.max(0, Math.min(255, siguiente));
+        };
+        return `rgb(${ajustar(r)}, ${ajustar(g)}, ${ajustar(b)})`;
+      }
+
+      function hexConAlpha(hex, alpha) {
+        const limpio = hex.replace('#', '');
+        const expandido = limpio.length === 3
+          ? limpio.split('').map((caracter) => caracter + caracter).join('')
+          : limpio;
+        const numero = parseInt(expandido, 16);
+        const r = (numero >> 16) & 255;
+        const g = (numero >> 8) & 255;
+        const b = numero & 255;
+        return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+      }
+
+      function pintarBloque(ctxLocal, x, y, lado, colorBase, colorSombra, radio) {
+        const gradiente = ctxLocal.createLinearGradient(x, y, x + lado, y + lado);
+        gradiente.addColorStop(0, colorBase);
+        gradiente.addColorStop(1, colorSombra);
+        ctxLocal.fillStyle = gradiente;
+        ctxLocal.beginPath();
+        const r = Math.min(radio, lado / 2);
+        ctxLocal.moveTo(x + r, y);
+        ctxLocal.arcTo(x + lado, y, x + lado, y + lado, r);
+        ctxLocal.arcTo(x + lado, y + lado, x, y + lado, r);
+        ctxLocal.arcTo(x, y + lado, x, y, r);
+        ctxLocal.arcTo(x, y, x + lado, y, r);
+        ctxLocal.closePath();
+        ctxLocal.fill();
+      }
+
+      const corazonClaro = ajustarColor(heartColor, 8);
+      const corazonOscuro = ajustarColor(heartColor, -20);
+      const bordeColor = hexConAlpha(heartColor, 0.34);
+      const brilloFondo = ajustarColor(backgroundColor, 6);
+      const sombraFondo = ajustarColor(backgroundColor, -12);
+      const bloque = size / 12;
+      const radioBloque = bloque * 0.18;
+
+      ctx.save();
+      ctx.shadowColor = 'rgba(0,0,0,0.25)';
+      ctx.shadowBlur = 18;
+      ctx.shadowOffsetY = 6;
+      const fondo = ctx.createRadialGradient(centerX, centerY - size * 0.1, size * 0.08, centerX, centerY, size / 2);
+      fondo.addColorStop(0, brilloFondo);
+      fondo.addColorStop(1, sombraFondo);
+      ctx.fillStyle = fondo;
+      ctx.beginPath();
+      ctx.moveTo(centerX, centerY - size / 2);
+      ctx.arc(centerX, centerY, size / 2, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.shadowColor = 'transparent';
+      ctx.shadowBlur = 0;
+      ctx.shadowOffsetX = 0;
+      ctx.shadowOffsetY = 0;
+
+      ctx.lineWidth = Math.max(4, Math.min(6, size * 0.034));
+      ctx.strokeStyle = bordeColor;
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, size / 2 - ctx.lineWidth / 2, 0, Math.PI * 2);
+      ctx.stroke();
+
+      ctx.translate(centerX, centerY + size * 0.045);
+      ctx.scale(size / 120, size / 120);
+
+      const mascara = [
+        "..##....##..",
+        ".####..####.",
+        "###########.",
+        "###########.",
+        ".##########.",
+        "..########..",
+        "...######...",
+        "....####....",
+        ".....##....."
+      ];
+
+      const inicioX = -((mascara[0].length * bloque) / (size / 120)) / 2;
+      const inicioY = -((mascara.length * bloque) / (size / 120)) / 2;
+      const escala = size / 120;
+      const bloqueLocal = bloque / escala;
+      const radioLocal = radioBloque / escala;
+
+      for (let fila = 0; fila < mascara.length; fila++) {
+        const linea = mascara[fila];
+        for (let columna = 0; columna < linea.length; columna++) {
+          if (linea[columna] !== '#') continue;
+          const x = inicioX + columna * bloqueLocal;
+          const y = inicioY + fila * bloqueLocal;
+          const intensidad = fila < 3 ? 0 : fila < 6 ? 0.5 : 1;
+          pintarBloque(
+            ctx,
+            x,
+            y,
+            bloqueLocal,
+            intensidad < 0.5 ? corazonClaro : ajustarColor(heartColor, -4),
+            corazonOscuro,
+            radioLocal
+          );
+        }
+      }
+
+      ctx.beginPath();
+      ctx.lineWidth = 1.8;
+      ctx.strokeStyle = hexConAlpha(corazonOscuro, 0.95);
+      const puntaX = 0;
+      const puntaY = 33;
+      ctx.moveTo(puntaX, puntaY);
+      ctx.bezierCurveTo(-30, 10, -48, -12, -40, -34);
+      ctx.bezierCurveTo(-32, -56, -10, -48, 0, -24);
+      ctx.bezierCurveTo(10, -48, 32, -56, 40, -34);
+      ctx.bezierCurveTo(48, -12, 30, 10, puntaX, puntaY);
+      ctx.stroke();
+
+      ctx.restore();
     }
   </script>
 </body>
