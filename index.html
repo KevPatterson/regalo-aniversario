@@ -88,6 +88,15 @@
   }
   .contador-num{
     font-family:'Cormorant Garamond',serif;font-size:38px;color:var(--crema);
+    display:inline-block;transform-origin:center bottom;will-change:transform,opacity;
+  }
+  .contador-num.animando{
+    animation: contadorSubir 0.55s ease;
+  }
+  @keyframes contadorSubir{
+    0%{opacity:0.25;transform:translateY(14px) scale(0.96);} 
+    55%{opacity:1;transform:translateY(-2px) scale(1.02);} 
+    100%{opacity:1;transform:translateY(0) scale(1);} 
   }
   .contador-lbl{font-size:11px;letter-spacing:1px;color:var(--lila);margin-top:4px;}
 
@@ -260,7 +269,7 @@
           </div>
           <div class="evento">
             <div class="fecha">HOY</div>
-            <h3>Y seguimos aquí</h3>
+            <h3>Y a pesar de todo seguimos aquí</h3>
             <div class="evento-img"><img src="fotos/photo_2_2026-09-12_19-54-50.jpg" alt="Hoy"></div>
           </div>
         </div>
@@ -394,6 +403,22 @@
     // En JavaScript, enero = 0 y diciembre = 11. Por eso noviembre es 10.
     const inicio = new Date(2025, 10, 6, 0, 0); // 6-11-2025
 
+    function actualizarNumero(elementoId, valor, largo) {
+      const elemento = document.getElementById(elementoId);
+      if (!elemento) return;
+
+      const valorFormateado = String(valor).padStart(largo, '0');
+      const valorActual = elemento.dataset.valor || elemento.textContent;
+
+      if (Number(valorActual) !== valor) {
+        elemento.dataset.valor = String(valor);
+        elemento.textContent = valorFormateado;
+        elemento.classList.remove('animando');
+        void elemento.offsetWidth;
+        elemento.classList.add('animando');
+      }
+    }
+
     function actualizarContador(){
       const ahora = new Date();
       let dif = ahora - inicio;
@@ -402,10 +427,11 @@
       const horas = Math.floor((dif / (1000*60*60)) % 24);
       const mins = Math.floor((dif / (1000*60)) % 60);
       const segs = Math.floor((dif / 1000) % 60);
-      document.getElementById('dias').textContent = String(dias).padStart(3,'0');
-      document.getElementById('horas').textContent = String(horas).padStart(2,'0');
-      document.getElementById('mins').textContent = String(mins).padStart(2,'0');
-      document.getElementById('segs').textContent = String(segs).padStart(2,'0');
+
+      actualizarNumero('dias', dias, 3);
+      actualizarNumero('horas', horas, 2);
+      actualizarNumero('mins', mins, 2);
+      actualizarNumero('segs', segs, 2);
     }
     actualizarContador();
     setInterval(actualizarContador, 1000);
