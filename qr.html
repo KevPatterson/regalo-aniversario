@@ -13,54 +13,289 @@
     --rosa:#e8a598;
     --vino:#c1666b;
   }
-  body{
-    font-family:sans-serif;background:var(--fondo);color:var(--texto);
-    display:flex;flex-direction:column;align-items:center;justify-content:center;
-    min-height:100vh;margin:0;padding:20px;text-align:center;
+  
+  * {
+    box-sizing: border-box;
   }
+  
+  body{
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--fondo);
+    color: var(--texto);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: clamp(12px, 4vw, 20px);
+    text-align: center;
+  }
+  
   .panel{
-    width:100%;max-width:420px;background:rgba(36,29,61,0.72);border:1px solid rgba(232,165,152,0.18);
-    border-radius:18px;padding:24px 20px 20px;box-shadow:0 18px 50px rgba(0,0,0,0.25);
+    width: 100%;
+    max-width: 420px;
+    background: rgba(36, 29, 61, 0.72);
+    border: 1px solid rgba(232, 165, 152, 0.18);
+    border-radius: clamp(14px, 4vw, 18px);
+    padding: clamp(16px, 5vw, 24px) clamp(14px, 4vw, 20px) clamp(16px, 5vw, 20px);
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.25);
     backdrop-filter: blur(8px);
   }
-  h2{margin:0 0 8px;font-size:28px;}
-  .copy{opacity:0.72;font-size:13px;line-height:1.5;max-width:340px;margin:0 auto 18px;}
+  
+  h2{
+    margin: 0 0 clamp(6px, 2vw, 8px);
+    font-size: clamp(22px, 6vw, 28px);
+    font-weight: 700;
+  }
+  
+  .copy{
+    opacity: 0.72;
+    font-size: clamp(12px, 3.2vw, 13px);
+    line-height: 1.5;
+    max-width: 340px;
+    margin: 0 auto clamp(14px, 4vw, 18px);
+  }
+  
   .campos{
-    display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(8px, 2.5vw, 10px);
+    margin-bottom: clamp(12px, 3.5vw, 14px);
   }
+  
   input{
-    width:100%;padding:12px 14px;font-size:15px;
-    border-radius:12px;border:1px solid rgba(232,165,152,0.2);
-    background:var(--panel);color:var(--texto);outline:none;
+    width: 100%;
+    padding: clamp(10px, 3vw, 12px) clamp(12px, 3.5vw, 14px);
+    font-size: clamp(14px, 3.8vw, 15px);
+    border-radius: clamp(10px, 3vw, 12px);
+    border: 1px solid rgba(232, 165, 152, 0.2);
+    background: var(--panel);
+    color: var(--texto);
+    outline: none;
+    transition: all 0.2s ease;
   }
-  input:focus{border-color:var(--rosa);box-shadow:0 0 0 3px rgba(232,165,152,0.14);}
-  .full{grid-column:1 / -1;}
+  
+  input:focus{
+    border-color: var(--rosa);
+    box-shadow: 0 0 0 3px rgba(232, 165, 152, 0.14);
+  }
+  
+  input[type="color"] {
+    cursor: pointer;
+    min-height: 44px;
+  }
+  
+  .full{
+    grid-column: 1 / -1;
+  }
+  
+  .color-group {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(4px, 1.5vw, 6px);
+  }
+  
+  .color-group input[type="color"] {
+    height: clamp(44px, 12vw, 52px);
+  }
+  
+  .color-label {
+    font-size: clamp(10px, 2.8vw, 11px);
+    opacity: 0.7;
+    text-align: center;
+    line-height: 1.2;
+    padding: 0 4px;
+  }
+  
   .toggle{
-    grid-column:1 / -1;display:flex;align-items:center;justify-content:center;gap:10px;
-    font-size:13px;opacity:0.9;margin:2px 0 2px;
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(8px, 2.5vw, 10px);
+    font-size: clamp(12px, 3.2vw, 13px);
+    opacity: 0.9;
+    margin: 2px 0;
+    padding: clamp(4px, 1vw, 6px) 0;
   }
-  .toggle input{width:auto;margin:0;accent-color:var(--rosa);}
+  
+  .toggle input{
+    width: auto;
+    margin: 0;
+    accent-color: var(--rosa);
+    cursor: pointer;
+    min-width: 18px;
+    min-height: 18px;
+  }
+  
+  .toggle label {
+    cursor: pointer;
+  }
+  
   button{
-    padding:12px 26px;font-size:14px;border:1px solid var(--vino);background:linear-gradient(180deg, rgba(193,102,107,0.24), rgba(193,102,107,0.08));
-    color:var(--texto);border-radius:999px;cursor:pointer;margin-bottom:20px;
+    padding: clamp(10px, 3vw, 12px) clamp(22px, 6vw, 26px);
+    font-size: clamp(13px, 3.5vw, 14px);
+    border: 1px solid var(--vino);
+    background: linear-gradient(180deg, rgba(193, 102, 107, 0.24), rgba(193, 102, 107, 0.08));
+    color: var(--texto);
+    border-radius: 999px;
+    cursor: pointer;
+    margin-bottom: clamp(16px, 4vw, 20px);
+    transition: all 0.2s ease;
+    font-weight: 500;
+    min-height: 44px;
   }
-  .qr-wrap{position:relative;width:260px;height:260px;margin:0 auto 8px;}
+  
+  button:hover{
+    background: linear-gradient(180deg, rgba(193, 102, 107, 0.34), rgba(193, 102, 107, 0.18));
+    transform: translateY(-1px);
+  }
+  
+  button:active{
+    transform: translateY(0);
+  }
+  
+  .qr-wrap{
+    position: relative;
+    width: 100%;
+    max-width: 260px;
+    aspect-ratio: 1;
+    margin: 0 auto clamp(6px, 2vw, 8px);
+  }
+  
   #qr-canvas{
-    background:#fff;padding:16px;border-radius:14px;overflow:hidden;
-    width:260px;height:260px;
-    display:flex;align-items:center;justify-content:center;
+    background: #fff;
+    padding: clamp(12px, 4vw, 16px);
+    border-radius: clamp(12px, 3.5vw, 14px);
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
-  #qr-canvas canvas, #qr-canvas img{display:block;max-width:100%;height:auto;}
-  #qr-canvas img{width:100%;object-fit:contain;}
+  
+  #qr-canvas canvas, 
+  #qr-canvas img{
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+  }
+  
   .heart-overlay{
-    position:absolute;left:50%;top:50%;width:72px;height:72px;transform:translate(-50%,-50%);
-    display:none;align-items:center;justify-content:center;pointer-events:none;
-    background:rgba(244,236,226,0.94);border-radius:22px;box-shadow:0 8px 22px rgba(28,23,48,0.18);
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: clamp(60px, 18vw, 72px);
+    height: clamp(60px, 18vw, 72px);
+    transform: translate(-50%, -50%);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    background: rgba(244, 236, 226, 0.94);
+    border-radius: clamp(18px, 5vw, 22px);
+    box-shadow: 0 8px 22px rgba(28, 23, 48, 0.18);
   }
-  .heart-overlay.visible{display:flex;}
-  .heart-overlay span{font-size:42px;line-height:1;color:var(--vino);transform:translateY(-2px);}
-  .nota{font-size:12px;opacity:0.65;margin:10px auto 0;max-width:320px;line-height:1.45;}
-  a.descargar{color:#e8a598;font-size:13px;margin-top:14px;display:inline-block;}
+  
+  .heart-overlay.visible{
+    display: flex;
+  }
+  
+  .heart-overlay span{
+    font-size: clamp(36px, 10vw, 42px);
+    line-height: 1;
+    color: var(--vino);
+    transform: translateY(-2px);
+  }
+  
+  .nota{
+    font-size: clamp(11px, 3vw, 12px);
+    opacity: 0.65;
+    margin: clamp(8px, 2.5vw, 10px) auto 0;
+    max-width: 320px;
+    line-height: 1.45;
+  }
+  
+  a.descargar{
+    color: var(--rosa);
+    font-size: clamp(12px, 3.2vw, 13px);
+    margin-top: clamp(12px, 3.5vw, 14px);
+    display: inline-block;
+    text-decoration: none;
+    padding: clamp(8px, 2vw, 10px) clamp(16px, 4vw, 20px);
+    border: 1px solid var(--rosa);
+    border-radius: 999px;
+    transition: all 0.2s ease;
+    font-weight: 500;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  a.descargar:hover{
+    background: rgba(232, 165, 152, 0.1);
+    transform: translateY(-1px);
+  }
+  
+  a.descargar:active{
+    transform: translateY(0);
+  }
+  
+  /* Responsive breakpoints */
+  @media (max-width: 480px) {
+    .campos{
+      grid-template-columns: 1fr;
+    }
+    
+    .campos input:not(.full){
+      grid-column: 1;
+    }
+  }
+  
+  @media (min-width: 481px) and (max-width: 768px) {
+    .panel{
+      max-width: 500px;
+    }
+    
+    .qr-wrap{
+      max-width: 300px;
+    }
+  }
+  
+  @media (min-width: 769px) {
+    body{
+      padding: 20px;
+    }
+  }
+  
+  /* Mejoras de accesibilidad */
+  @media (prefers-reduced-motion: reduce) {
+    *{
+      transition: none !important;
+      animation: none !important;
+    }
+  }
+  
+  /* Alto contraste */
+  @media (prefers-contrast: high) {
+    .panel{
+      border-width: 2px;
+    }
+    
+    input{
+      border-width: 2px;
+    }
+    
+    button{
+      border-width: 2px;
+    }
+  }
 </style>
 </head>
 <body>
@@ -68,12 +303,21 @@
     <h2>Generador de QR</h2>
     <p class="copy">Personaliza el texto y los colores, genera el QR y descarga una imagen lista para imprimir.</p>
     <div class="campos">
-      <input id="url-input" class="full" type="text" placeholder="https://github.com/KevPatterson/regalo-aniversario">
-      <input id="titulo-input" type="text" placeholder="Para ti" value="Para ti">
-      <input id="mensaje-input" type="text" placeholder="Escanéame" value="Escanéame">
-      <input id="color-input" type="color" value="#1c1730" aria-label="Color del QR">
-      <input id="fondo-input" type="color" value="#ffffff" aria-label="Color de fondo">
-      <label class="toggle"><input id="corazon-input" type="checkbox" checked> Corazón en el centro</label>
+      <input id="url-input" class="full" type="text" placeholder="https://github.com/KevPatterson/regalo-aniversario" oninput="generarConDebounce()" aria-label="URL a codificar">
+      <input id="titulo-input" type="text" placeholder="Para ti" value="Para ti" oninput="generarConDebounce()" aria-label="Título">
+      <input id="mensaje-input" type="text" placeholder="Escanéame" value="Escanéame" oninput="generarConDebounce()" aria-label="Mensaje">
+      <div class="color-group">
+        <input id="color-input" type="color" value="#1c1730" aria-label="Color del QR" oninput="generarConDebounce()">
+        <span class="color-label">Corazones y marco</span>
+      </div>
+      <div class="color-group">
+        <input id="fondo-input" type="color" value="#ffffff" aria-label="Color de fondo" oninput="generarConDebounce()">
+        <span class="color-label">Fondo del QR</span>
+      </div>
+      <label class="toggle" for="corazon-input">
+        <input id="corazon-input" type="checkbox" checked onchange="generar()">
+        <span>Corazón en el centro</span>
+      </label>
     </div>
     <button onclick="generar()">Generar QR</button>
     <div class="qr-wrap">
@@ -85,6 +329,13 @@
   </div>
 
   <script>
+    let timeoutId = null;
+    
+    function generarConDebounce(){
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(generar, 150);
+    }
+    
     function generar(){
       const url = document.getElementById('url-input').value.trim();
       if(!url) return;
@@ -93,77 +344,225 @@
       const colorDark = document.getElementById('color-input').value;
       const colorLight = document.getElementById('fondo-input').value;
       const corazonActivo = document.getElementById('corazon-input').checked;
-      const canvas = document.getElementById('qr-canvas');
-      canvas.innerHTML = '';
+      
+      // Generar QR estándar primero
       const qrcodeHost = document.createElement('div');
       qrcodeHost.style.position = 'absolute';
       qrcodeHost.style.left = '-9999px';
-      qrcodeHost.style.top = '-9999px';
       document.body.appendChild(qrcodeHost);
 
-      new QRCode(qrcodeHost, {
+      const qrInstance = new QRCode(qrcodeHost, {
         text: url,
         width: 1024,
         height: 1024,
-        colorDark,
-        colorLight,
+        colorDark: '#000000',
+        colorLight: '#ffffff',
         correctLevel: QRCode.CorrectLevel.H
       });
 
-      const renderedCanvas = qrcodeHost.querySelector('canvas');
-      const link = document.getElementById('link-descarga');
-      if (renderedCanvas) {
+      setTimeout(() => {
+        const standardCanvas = qrcodeHost.querySelector('canvas');
+        if (!standardCanvas) return;
+        
+        // SOLUCIÓN PROBLEMA 1: Obtener el número real de módulos
+        let moduleCount = 33; // valor por defecto
+        try {
+          if (qrInstance._oQRCode && typeof qrInstance._oQRCode.getModuleCount === 'function') {
+            moduleCount = qrInstance._oQRCode.getModuleCount();
+          }
+        } catch (e) {
+          console.warn('No se pudo obtener moduleCount dinámicamente, usando 33 por defecto');
+        }
+        
+        const ctx = standardCanvas.getContext('2d');
+        const imageData = ctx.getImageData(0, 0, 1024, 1024);
+        const data = imageData.data;
+        
+        // Crear canvas estilizado
+        const styledCanvas = document.createElement('canvas');
+        styledCanvas.width = 1024;
+        styledCanvas.height = 1024;
+        const styledCtx = styledCanvas.getContext('2d');
+        
+        // Fondo
+        styledCtx.fillStyle = colorLight;
+        styledCtx.fillRect(0, 0, 1024, 1024);
+        styledCtx.fillStyle = colorDark;
+        
+        // Calcular tamaño de módulo dinámicamente
+        const moduleSize = 1024 / moduleCount;
+        const modules = [];
+        
+        // SOLUCIÓN PROBLEMA 2: Muestrear el centro de cada módulo, no la esquina
+        for (let modY = 0; modY < moduleCount; modY++) {
+          for (let modX = 0; modX < moduleCount; modX++) {
+            // Obtener el píxel del CENTRO del módulo
+            const centerX = Math.floor((modX + 0.5) * moduleSize);
+            const centerY = Math.floor((modY + 0.5) * moduleSize);
+            const pixelIndex = (centerY * 1024 + centerX) * 4;
+            
+            if (data[pixelIndex] < 128) { // Píxel oscuro
+              modules.push({ x: modX, y: modY });
+            }
+          }
+        }
+        
+        // Calcular posiciones de las esquinas dinámicamente
+        const corners = [
+          { x: 0, y: 0 },
+          { x: moduleCount - 7, y: 0 },
+          { x: 0, y: moduleCount - 7 }
+        ];
+        
+        // Dibujar módulos como corazones (excepto los que están en las esquinas)
+        modules.forEach(mod => {
+          const inCorner = corners.some(corner => 
+            mod.x >= corner.x && mod.x < corner.x + 7 &&
+            mod.y >= corner.y && mod.y < corner.y + 7
+          );
+          
+          if (!inCorner) {
+            // Mini-corazones en lugar de puntos circulares
+            const centerX = (mod.x + 0.5) * moduleSize;
+            const centerY = (mod.y + 0.5) * moduleSize;
+            dibujarSiluetaCorazon(styledCtx, centerX, centerY, moduleSize * 0.85, colorDark);
+          }
+        });
+        
+        // Dibujar esquinas con forma de corazón
+        corners.forEach(corner => {
+          const cornerX = (corner.x + 3.5) * moduleSize; // centro del área 7x7
+          const cornerY = (corner.y + 3.5) * moduleSize;
+          const cornerSize = moduleSize * 7;
+          drawHeartCorner(styledCtx, cornerX, cornerY, cornerSize, colorDark, colorLight);
+        });
+        
+        // Crear imagen exportable
         const exportCanvas = document.createElement('canvas');
         exportCanvas.width = 1600;
         exportCanvas.height = 1900;
-        const ctx = exportCanvas.getContext('2d');
+        const exportCtx = exportCanvas.getContext('2d');
 
-        ctx.fillStyle = '#f4ece2';
-        ctx.fillRect(0, 0, exportCanvas.width, exportCanvas.height);
+        exportCtx.fillStyle = '#f4ece2';
+        exportCtx.fillRect(0, 0, exportCanvas.width, exportCanvas.height);
 
-        const pad = 120;
         const qrSize = 1200;
         const qrX = (exportCanvas.width - qrSize) / 2;
         const qrY = 320;
 
-        ctx.fillStyle = colorLight;
-        roundRect(ctx, 70, 70, exportCanvas.width - 140, exportCanvas.height - 140, 44);
-        ctx.fill();
+        exportCtx.fillStyle = colorLight;
+        roundRect(exportCtx, 70, 70, exportCanvas.width - 140, exportCanvas.height - 140, 44);
+        exportCtx.fill();
 
-        ctx.strokeStyle = colorDark;
-        ctx.lineWidth = 8;
-        ctx.stroke();
+        exportCtx.strokeStyle = colorDark;
+        exportCtx.lineWidth = 8;
+        exportCtx.stroke();
 
-        ctx.fillStyle = colorDark;
-        ctx.textAlign = 'center';
-        ctx.font = '700 86px sans-serif';
-        ctx.fillText(titulo, exportCanvas.width / 2, 180);
+        exportCtx.fillStyle = colorDark;
+        exportCtx.textAlign = 'center';
+        exportCtx.font = '700 86px sans-serif';
+        exportCtx.fillText(titulo, exportCanvas.width / 2, 180);
 
-        ctx.font = '400 42px sans-serif';
-        ctx.globalAlpha = 0.78;
-        ctx.fillText(mensaje, exportCanvas.width / 2, 250);
-        ctx.globalAlpha = 1;
+        exportCtx.font = '400 42px sans-serif';
+        exportCtx.globalAlpha = 0.78;
+        exportCtx.fillText(mensaje, exportCanvas.width / 2, 250);
+        exportCtx.globalAlpha = 1;
 
-        ctx.drawImage(renderedCanvas, qrX, qrY, qrSize, qrSize);
+        exportCtx.drawImage(styledCanvas, qrX, qrY, qrSize, qrSize);
+        
         if (corazonActivo) {
-          drawHeartBadge(ctx, exportCanvas.width / 2, qrY + qrSize / 2, 150, colorLight, colorDark);
+          drawHeartBadge(exportCtx, exportCanvas.width / 2, qrY + qrSize / 2, 150, colorLight, colorDark);
         }
 
-        ctx.font = '400 28px sans-serif';
-        ctx.globalAlpha = 0.7;
-        ctx.fillText(url, exportCanvas.width / 2, 1640);
-        ctx.globalAlpha = 1;
+        exportCtx.font = '400 28px sans-serif';
+        exportCtx.globalAlpha = 0.7;
+        exportCtx.fillText(url, exportCanvas.width / 2, 1640);
+        exportCtx.globalAlpha = 1;
 
+        const link = document.getElementById('link-descarga');
         link.href = exportCanvas.toDataURL('image/png');
         link.style.display = 'inline-block';
 
+        const canvas = document.getElementById('qr-canvas');
+        canvas.innerHTML = '';
         const preview = new Image();
         preview.alt = 'Vista previa del QR final';
         preview.src = link.href;
         canvas.appendChild(preview);
-      }
 
-      qrcodeHost.remove();
+        qrcodeHost.remove();
+      }, 100);
+    }
+    
+    // SOLUCIÓN PROBLEMA 3 y 4: Función única para dibujar silueta de corazón suave
+    function dibujarSiluetaCorazon(ctx, cx, cy, size, color) {
+      ctx.fillStyle = color;
+      ctx.beginPath();
+      
+      // Escala para el corazón
+      const s = size / 2;
+      
+      // Punto inferior (punta del corazón)
+      ctx.moveTo(cx, cy + s * 0.7);
+      
+      // Curva derecha inferior
+      ctx.bezierCurveTo(
+        cx, cy + s * 0.4,           // control 1
+        cx + s * 0.8, cy + s * 0.3, // control 2
+        cx + s * 0.8, cy - s * 0.1  // fin
+      );
+      
+      // Lóbulo derecho superior
+      ctx.bezierCurveTo(
+        cx + s * 0.8, cy - s * 0.6, // control 1
+        cx + s * 0.3, cy - s * 0.8, // control 2
+        cx, cy - s * 0.3            // fin (centro arriba)
+      );
+      
+      // Lóbulo izquierdo superior
+      ctx.bezierCurveTo(
+        cx - s * 0.3, cy - s * 0.8, // control 1
+        cx - s * 0.8, cy - s * 0.6, // control 2
+        cx - s * 0.8, cy - s * 0.1  // fin
+      );
+      
+      // Curva izquierda inferior
+      ctx.bezierCurveTo(
+        cx - s * 0.8, cy + s * 0.3, // control 1
+        cx, cy + s * 0.4,           // control 2
+        cx, cy + s * 0.7            // fin (punta)
+      );
+      
+      ctx.closePath();
+      ctx.fill();
+    }
+    
+    // Dibujar esquinas de posicionamiento como cuadrados concéntricos (funcional para escáneres)
+    function drawHeartCorner(ctx, cx, cy, size, colorDark, colorLight) {
+      ctx.save();
+      
+      // Cuadrado exterior: tamaño completo, color oscuro
+      const outerSize = size;
+      const outerRadius = outerSize * 0.18; // 18% de border-radius
+      ctx.fillStyle = colorDark;
+      roundRect(ctx, cx - outerSize / 2, cy - outerSize / 2, outerSize, outerSize, outerRadius);
+      ctx.fill();
+      
+      // Cuadrado medio: 5/7 del tamaño, color claro
+      const middleSize = size * (5 / 7);
+      const middleRadius = middleSize * 0.18;
+      ctx.fillStyle = colorLight;
+      roundRect(ctx, cx - middleSize / 2, cy - middleSize / 2, middleSize, middleSize, middleRadius);
+      ctx.fill();
+      
+      // Cuadrado interior: 3/7 del tamaño, color oscuro
+      const innerSize = size * (3 / 7);
+      const innerRadius = innerSize * 0.18;
+      ctx.fillStyle = colorDark;
+      roundRect(ctx, cx - innerSize / 2, cy - innerSize / 2, innerSize, innerSize, innerRadius);
+      ctx.fill();
+      
+      ctx.restore();
     }
 
     function roundRect(ctx, x, y, width, height, radius) {
@@ -177,6 +576,7 @@
       ctx.closePath();
     }
 
+    // SOLUCIÓN PROBLEMA 4: Reescribir drawHeartBadge con silueta suave
     function drawHeartBadge(ctx, centerX, centerY, size, backgroundColor, heartColor) {
       function ajustarColor(hex, porcentaje) {
         const limpio = hex.replace('#', '');
@@ -207,104 +607,59 @@
         return `rgba(${r}, ${g}, ${b}, ${alpha})`;
       }
 
-      function pintarBloque(ctxLocal, x, y, lado, colorBase, colorSombra, radio) {
-        const gradiente = ctxLocal.createLinearGradient(x, y, x + lado, y + lado);
-        gradiente.addColorStop(0, colorBase);
-        gradiente.addColorStop(1, colorSombra);
-        ctxLocal.fillStyle = gradiente;
-        ctxLocal.beginPath();
-        const r = Math.min(radio, lado / 2);
-        ctxLocal.moveTo(x + r, y);
-        ctxLocal.arcTo(x + lado, y, x + lado, y + lado, r);
-        ctxLocal.arcTo(x + lado, y + lado, x, y + lado, r);
-        ctxLocal.arcTo(x, y + lado, x, y, r);
-        ctxLocal.arcTo(x, y, x + lado, y, r);
-        ctxLocal.closePath();
-        ctxLocal.fill();
-      }
-
-      const corazonClaro = ajustarColor(heartColor, 8);
-      const corazonOscuro = ajustarColor(heartColor, -20);
-      const bordeColor = hexConAlpha(heartColor, 0.34);
       const brilloFondo = ajustarColor(backgroundColor, 6);
       const sombraFondo = ajustarColor(backgroundColor, -12);
-      const bloque = size / 12;
-      const radioBloque = bloque * 0.18;
+      const corazonClaro = ajustarColor(heartColor, 12);
+      const corazonOscuro = ajustarColor(heartColor, -15);
 
       ctx.save();
+      
+      // Fondo circular con sombra y gradiente
       ctx.shadowColor = 'rgba(0,0,0,0.25)';
       ctx.shadowBlur = 18;
       ctx.shadowOffsetY = 6;
-      const fondo = ctx.createRadialGradient(centerX, centerY - size * 0.1, size * 0.08, centerX, centerY, size / 2);
+      const fondo = ctx.createRadialGradient(
+        centerX, centerY - size * 0.1, size * 0.08, 
+        centerX, centerY, size / 2
+      );
       fondo.addColorStop(0, brilloFondo);
       fondo.addColorStop(1, sombraFondo);
       ctx.fillStyle = fondo;
       ctx.beginPath();
-      ctx.moveTo(centerX, centerY - size / 2);
       ctx.arc(centerX, centerY, size / 2, 0, Math.PI * 2);
       ctx.fill();
 
+      // Resetear sombra para el corazón
       ctx.shadowColor = 'transparent';
       ctx.shadowBlur = 0;
-      ctx.shadowOffsetX = 0;
       ctx.shadowOffsetY = 0;
 
-      ctx.lineWidth = Math.max(4, Math.min(6, size * 0.034));
-      ctx.strokeStyle = bordeColor;
+      // Crear path del corazón para aplicar gradiente y trazo
+      const heartSize = size * 0.65;
+      const s = heartSize / 2;
+      const cy = centerY + size * 0.02; // ligero ajuste vertical
+      
       ctx.beginPath();
-      ctx.arc(centerX, centerY, size / 2 - ctx.lineWidth / 2, 0, Math.PI * 2);
-      ctx.stroke();
-
-      ctx.translate(centerX, centerY + size * 0.045);
-      ctx.scale(size / 120, size / 120);
-
-      const mascara = [
-        "..##....##..",
-        ".####..####.",
-        "###########.",
-        "###########.",
-        ".##########.",
-        "..########..",
-        "...######...",
-        "....####....",
-        ".....##....."
-      ];
-
-      const inicioX = -((mascara[0].length * bloque) / (size / 120)) / 2;
-      const inicioY = -((mascara.length * bloque) / (size / 120)) / 2;
-      const escala = size / 120;
-      const bloqueLocal = bloque / escala;
-      const radioLocal = radioBloque / escala;
-
-      for (let fila = 0; fila < mascara.length; fila++) {
-        const linea = mascara[fila];
-        for (let columna = 0; columna < linea.length; columna++) {
-          if (linea[columna] !== '#') continue;
-          const x = inicioX + columna * bloqueLocal;
-          const y = inicioY + fila * bloqueLocal;
-          const intensidad = fila < 3 ? 0 : fila < 6 ? 0.5 : 1;
-          pintarBloque(
-            ctx,
-            x,
-            y,
-            bloqueLocal,
-            intensidad < 0.5 ? corazonClaro : ajustarColor(heartColor, -4),
-            corazonOscuro,
-            radioLocal
-          );
-        }
-      }
-
-      ctx.beginPath();
-      ctx.lineWidth = 1.8;
-      ctx.strokeStyle = hexConAlpha(corazonOscuro, 0.95);
-      const puntaX = 0;
-      const puntaY = 33;
-      ctx.moveTo(puntaX, puntaY);
-      ctx.bezierCurveTo(-30, 10, -48, -12, -40, -34);
-      ctx.bezierCurveTo(-32, -56, -10, -48, 0, -24);
-      ctx.bezierCurveTo(10, -48, 32, -56, 40, -34);
-      ctx.bezierCurveTo(48, -12, 30, 10, puntaX, puntaY);
+      ctx.moveTo(centerX, cy + s * 0.7);
+      ctx.bezierCurveTo(centerX, cy + s * 0.4, centerX + s * 0.8, cy + s * 0.3, centerX + s * 0.8, cy - s * 0.1);
+      ctx.bezierCurveTo(centerX + s * 0.8, cy - s * 0.6, centerX + s * 0.3, cy - s * 0.8, centerX, cy - s * 0.3);
+      ctx.bezierCurveTo(centerX - s * 0.3, cy - s * 0.8, centerX - s * 0.8, cy - s * 0.6, centerX - s * 0.8, cy - s * 0.1);
+      ctx.bezierCurveTo(centerX - s * 0.8, cy + s * 0.3, centerX, cy + s * 0.4, centerX, cy + s * 0.7);
+      ctx.closePath();
+      
+      // Gradiente en el corazón
+      const gradienteCorazon = ctx.createLinearGradient(
+        centerX - heartSize / 2, cy - heartSize / 2,
+        centerX + heartSize / 2, cy + heartSize / 2
+      );
+      gradienteCorazon.addColorStop(0, corazonClaro);
+      gradienteCorazon.addColorStop(1, corazonOscuro);
+      ctx.fillStyle = gradienteCorazon;
+      ctx.fill();
+      
+      // Trazo fino alrededor del corazón
+      ctx.strokeStyle = hexConAlpha(corazonOscuro, 0.6);
+      ctx.lineWidth = 2;
       ctx.stroke();
 
       ctx.restore();
