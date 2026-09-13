@@ -77,7 +77,9 @@
     font-size:12px;letter-spacing:1.5px;color:var(--lila);opacity:0.8;margin-bottom:10px;
   }
   .titulo-seccion{font-size:30px;color:var(--rosa);margin-bottom:6px;}
-  .sub{font-size:14px;color:var(--crema);opacity:0.6;margin-bottom:32px;line-height:1.5;}
+  .sub{font-size:14px;color:var(--crema);opacity:0.6;margin-bottom:10px;line-height:1.5;display:flex;align-items:center;justify-content:center;gap:10px;}
+  .sub .flecha{display:inline-block;width:18px;height:18px;fill:currentColor;transform-origin:center;animation:bajar 1s ease-in-out infinite;opacity:0.9}
+  @keyframes bajar{0%{transform:translateY(0);}50%{transform:translateY(6px);}100%{transform:translateY(0);}}
 
   /* ---- CONTADOR ---- */
   #contador{text-align:center;}
@@ -124,6 +126,11 @@
   .evento .fecha{font-size:11px;letter-spacing:1px;color:var(--lila);margin-bottom:4px;}
   .evento h3{font-size:20px;color:var(--crema);margin-bottom:4px;}
   .evento p{font-size:14px;line-height:1.5;color:var(--crema);opacity:0.65;}
+  .evento-img{margin:12px 0;border-radius:6px;overflow:hidden;border:1px solid var(--linea);}
+  .evento-img img{width:100%;height:auto;display:block;object-fit:cover;}
+
+  /* Reducir espacio entre galería y la sección 'historia' */
+  #historia{padding-top:30px;}
 
   /* ---- CARTA ---- */
   #carta{
@@ -197,14 +204,30 @@
       <div class="max">
         <div class="kicker">NOSOTROS</div>
         <div class="titulo-seccion">Algunos momentos</div>
-        <div class="sub">Desliza para ver más</div>
       </div>
       <div class="galeria">
-        <div class="foto"><img src="https://picsum.photos/seed/nosotros1/500/700" alt="Foto 1"><div class="cap">Placeholder — cambiar por foto real</div></div>
-        <div class="foto"><img src="https://picsum.photos/seed/nosotros2/500/700" alt="Foto 2"><div class="cap">Placeholder — cambiar por foto real</div></div>
-        <div class="foto"><img src="https://picsum.photos/seed/nosotros3/500/700" alt="Foto 3"><div class="cap">Placeholder — cambiar por foto real</div></div>
-        <div class="foto"><img src="https://picsum.photos/seed/nosotros4/500/700" alt="Foto 4"><div class="cap">Placeholder — cambiar por foto real</div></div>
+        <div class="foto"><img src="fotos/photo_1_2026-09-12_20-04-39.jpg" alt="foto_1_20-04-39"><div class="cap">9</div></div>
+        <div class="foto"><img src="fotos/photo_2_2026-09-12_20-04-39.jpg" alt="foto_2_20-04-39"><div class="cap"></div></div>
+        <div class="foto"><img src="fotos/photo_3_2026-09-12_20-04-39.jpg" alt="foto_3_20-04-39"><div class="cap"></div></div>
+        <div class="foto"><img src="fotos/photo_4_2026-09-12_20-04-39.jpg" alt="foto_4_20-04-39"><div class="cap"></div></div>
+        <div class="foto"><img src="fotos/photo_5_2026-09-12_20-04-39.jpg" alt="foto_5_20-04-39"><div class="cap"></div></div>
+        <div class="foto"><img src="fotos/photo_6_2026-09-12_20-04-39.jpg" alt="foto_6_20-04-39"><div class="cap"></div></div>
+        <div class="foto"><img src="fotos/photo_7_2026-09-12_20-04-39.jpg" alt="foto_7_20-04-39"><div class="cap"></div></div>
+        <div class="foto"><img src="fotos/photo_8_2026-09-12_20-04-39.jpg" alt="foto_8_20-04-39"><div class="cap"></div></div>
+        <div class="foto"><img src="fotos/photo_9_2026-09-12_20-04-39.jpg" alt="foto_9_20-04-39"><div class="cap"></div></div>
+        <div class="foto"><img src="fotos/photo_10_2026-09-12_20-04-39.jpg" alt="foto_10_20-04-39"><div class="cap"></div></div>
+        <div class="foto"><img src="fotos/photo_11_2026-09-12_20-04-39.jpg" alt="foto_11_20-04-39"><div class="cap"></div></div>
+        <div class="foto"><img src="fotos/photo_12_2026-09-12_20-04-39.jpg" alt="foto_12_20-04-39"><div class="cap"></div></div>
+        <div class="foto"><img src="fotos/photo_13_2026-09-12_20-04-39.jpg" alt="foto_13_20-04-39"><div class="cap"></div></div>
+        <div class="foto"><img src="fotos/photo_14_2026-09-12_20-04-39.jpg" alt="foto_14_20-04-39"><div class="cap"></div></div>
       </div>
+        <div class="sub">Desliza para ver más
+          <span class="flecha" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg" focusable="false">
+              <path d="M12 5v14M5 12l7 7 7-7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            </svg>
+          </span>
+        </div>
     </section>
 
     <section id="historia">
@@ -215,7 +238,14 @@
           <div class="evento">
             <div class="fecha">[FECHA]</div>
             <h3>El primer día</h3>
-            <p>Placeholder: cuenta cómo se conocieron o el primer mensaje que se escribieron.</p>
+            <p>Esta fue nuestra primera conversación por whatshapp para planear nuestra primera cita...</p>
+            <div class="evento-img"><img src="fotos/photo_2_2026-09-12_16-29-28.jpg" alt="Primera conversación por WhatsApp"></div>
+            
+            <p>Este día me veía asi de linda 🥹:</p>
+            <div class="evento-img"><img src="fotos/photo_1_2026-09-12_16-34-12.jpg" alt="Me veía así de linda"></div>
+            
+            <p>y al llegar a mi casa luego de verte el primer mensaje que recibí fue este</p>
+            <div class="evento-img"><img src="fotos/photo_1_2026-09-12_16-29-28.jpg" alt="Primer mensaje al llegar a casa"></div>
           </div>
           <div class="evento">
             <div class="fecha">[FECHA]</div>
@@ -224,12 +254,16 @@
           </div>
           <div class="evento">
             <div class="fecha">[FECHA]</div>
-            <h3>Un momento especial</h3>
-            <p>Placeholder: un viaje, una sorpresa, algo que marcó la relación.</p>
+            <h3>Momentos especiales</h3>
+            <p>la primera foto q publicamos juntos.</p>
+            <div class="evento-img"><img src="fotos/photo_3_2026-09-12_19-54-50.jpg" alt="La primera foto que publicamos juntos"></div>
+            <p>el día que me pediste ser tu novia <3.</p>
+            <div class="evento-img"><img src="fotos/photo_1_2026-09-12_19-54-50.jpg" alt="Momento especial"></div>
           </div>
           <div class="evento">
             <div class="fecha">HOY</div>
             <h3>Y seguimos aquí</h3>
+            <div class="evento-img"><img src="fotos/photo_2_2026-09-12_19-54-50.jpg" alt="Hoy"></div>
             <p>Placeholder: cierre sobre el presente y lo que viene.</p>
           </div>
         </div>
