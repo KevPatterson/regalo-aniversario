@@ -438,41 +438,36 @@
       'ese botón no existe para ti 😌',
       'inténtalo de nuevo 💙',
       'te lo dije: ese botón no es tuyo 😏',
-      'poco a poco, que eso no se toca sin permiso 😜',
+      'asere ya, ponte pa esto -_-',
       'mejor deja el botón y acepta la verdad 💞',
       'no huyas de lo bonito, vuelve aquí 💖',
-      'ese botón ya está cansado de correr 😅',
-      'se te ve muy decidido, pero yo más 😌',
-      'yo no me rindo, tú tampoco 😘',
-      'eres persistente, te lo concedo 💫',
-      'lo que más me gusta es que no te rindes 🤭',
-      'ese botón está intentando escapar del destino 💘',
-      'no, no, no... mejor ven aquí y di que sí 😍',
-      'vuelve a intentarlo, yo te esperaré con amor 💙',
-      'si no lo tocas, no pasa nada... pero si lo tocas, te vuelve a escapar 🙃',
-      'te estás esforzando mucho por no aceptar, y me gusta 😏',
-      'mira qué difícil te está poniendo esto el botón 😅',
-      'pareces un poco obsesivo con ese botón 🤭',
-      'ni con el dedo puedes dejarme ir 😌',
-      'esto ya parece un juego de persecución 💞',
-      'yo sé que al final dirás que sí ❤️',
-      'este botón no va a ganar esta vez 💍',
-      'no te preocupes, ya te estoy robando una sonrisa 😌',
-      'no tan cerca, que todavía te tengo atrapada en mi corazón 💖',
+      'el botón se está cansando de correr 😅',
+      'te veo muy decidido, pero yo más 😌',
+      'si tú no te rindes yo tampoco 😘',
+      'no intentes escapar del destino 💘',
+      'vuelve a intentarlo, yo tengo paciencia',
+      'te estás esforzando mucho por no aceptar, y me voy a empingar',
+      'pareces un poco obsesivo con ese botón',
+      'no toques más el botón y tócame a mi',
+      'tanto lío para al final decir que sí ❤️',
+      'al final te estás y es lo que cuenta',
       'el botón huye, pero mi amor te alcanza 😊',
       'vámonos de una vez por la respuesta correcta 💞',
-      'el reto está en aceptarlo, no en correr 😘',
-      'ese “No” te queda muy corto para lo que siento 💫',
-      'todavía no te rindes, y yo tampoco 😄',
-      'el botón no sabe que ya te gané 💖',
-      'sigue intentando, pero yo sé el final 😍',
-      'todavía no me quiero ir sin un sí ✨'
+      'acaba de aceptarlo, que ya la que no quiere soy yo',
+      'me estás cayendo mal',
+      'todavía no te rindes, y yo tampoco',
+      'no me voy a ir sin un sí ✨',
+      'última oportunidad...'
     ];
+
+    let indiceBurla = 0;
 
     function cambiarMensajeBurla(){
       const mensaje = document.getElementById('mensaje-burla');
       if (!mensaje) return;
-      const frase = frasesBurla[Math.floor(Math.random() * frasesBurla.length)];
+
+      const frase = frasesBurla[indiceBurla % frasesBurla.length];
+      indiceBurla += 1;
       mensaje.textContent = frase;
       mensaje.classList.add('visible');
     }
