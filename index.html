@@ -185,22 +185,29 @@
   }
 
   .zona-botones{
-    position:relative;height:190px;width:100%;margin-top:20px;
+    position:relative;height:240px;width:100%;margin-top:20px;
   }
   .btn-si,
-  .btn-no{
+  .btn-no,
+  .btn-tal-vez{
     position:absolute;min-width:110px;padding:14px 28px;border-radius:999px;
     border:1px solid var(--linea);font-family:'Jost',sans-serif;font-size:15px;
     letter-spacing:0.5px;cursor:pointer;touch-action:manipulation;
     box-shadow:0 8px 18px rgba(0,0,0,0.12);
   }
   .btn-si{
-    left:50%;top:16px;transform:translateX(-50%);
+    left:50%;top:12px;transform:translateX(-50%);
     background:linear-gradient(180deg, var(--vino), var(--noche));
     color:var(--crema);border-color:rgba(244,236,226,0.2);
   }
+  .btn-tal-vez{
+    left:50%;top:82px;transform:translateX(-50%);
+    background:rgba(232,165,152,0.18);color:var(--crema);
+    border-color:var(--vino);
+    box-shadow:0 8px 18px rgba(196, 98, 104, 0.14);
+  }
   .btn-no{
-    left:50%;top:104px;transform:translateX(-50%);
+    left:50%;top:152px;transform:translateX(-50%);
     background:rgba(255,255,255,0.03);color:var(--crema);border-color:var(--linea);
     transition:left 0.25s ease, top 0.25s ease;
   }
@@ -352,12 +359,13 @@
         <div class="titulo-seccion">No toques este botón</div>
         <button class="btn-sorpresa" onclick="revelar()">tócalo de todas formas</button>
         <div class="revelacion" id="revelacion-texto">
-          ¿Aceptas ser mi novio de nuevo? <br>
+          Ojalá me dieras la oportunidad de ser tu novia nuevamente <br>
           <strong>🤍✨🤎</strong>
         </div>
 
         <div id="zona-botones" class="zona-botones">
           <button class="btn-si" type="button" onclick="responderSi()">Sí</button>
+          <button class="btn-tal-vez" type="button" onclick="mostrarMensajeTalVez()">Tal vez</button>
           <button id="btn-no" class="btn-no" type="button">No</button>
         </div>
         <p id="mensaje-burla">¡ni lo intentes! 🏃💨</p>
@@ -463,6 +471,10 @@
       'última oportunidad...'
     ];
 
+    const frasesTalVez = [
+      'me conformo con esa respuesta'
+    ];
+
     let indiceBurla = 0;
     let esUltimaOportunidad = false;
     let yaSeRindio = false;
@@ -478,10 +490,20 @@
       mensaje.classList.add('visible');
     }
 
+    function mostrarMensajeTalVez(){
+      const mensaje = document.getElementById('mensaje-burla');
+      if (!mensaje) return;
+
+      const frase = frasesTalVez[0];
+      mensaje.textContent = frase;
+      mensaje.classList.add('visible');
+    }
+
     function moverBotonNo(mostrarMensaje = false){
       const zona = document.getElementById('zona-botones');
       const btnNo = document.getElementById('btn-no');
       const btnSi = document.querySelector('.btn-si');
+      const btnTalVez = document.querySelector('.btn-tal-vez');
       if (!zona || !btnNo || !btnSi) return;
 
       const zonaRect = zona.getBoundingClientRect();
@@ -495,6 +517,18 @@
         width: btnSiRect.width - 32,
         height: btnSiRect.height - 32
       };
+
+      const btnTalVezLocal = btnTalVez ? {
+        left: btnTalVez.getBoundingClientRect().left - zonaRect.left + 16,
+        top: btnTalVez.getBoundingClientRect().top - zonaRect.top + 16,
+        right: btnTalVez.getBoundingClientRect().right - zonaRect.left - 16,
+        bottom: btnTalVez.getBoundingClientRect().bottom - zonaRect.top - 16,
+        width: btnTalVez.getBoundingClientRect().width - 32,
+        height: btnTalVez.getBoundingClientRect().height - 32
+      } : null;
+
+      const rectosBloqueantes = [btnSiLocal];
+      if (btnTalVezLocal) rectosBloqueantes.push(btnTalVezLocal);
 
       const maxLeft = Math.max(zonaRect.width - btnRect.width, 0);
       const maxTop = Math.max(zonaRect.height - btnRect.height, 0);
@@ -514,7 +548,7 @@
           bottom: top + btnRect.height
         };
 
-        const haySolapamiento = !(rectNo.right < btnSiLocal.left || rectNo.left > btnSiLocal.right || rectNo.bottom < btnSiLocal.top || rectNo.top > btnSiLocal.bottom);
+        const haySolapamiento = rectosBloqueantes.some((rectBloqueante) => !(rectNo.right < rectBloqueante.left || rectNo.left > rectBloqueante.right || rectNo.bottom < rectBloqueante.top || rectNo.top > rectBloqueante.bottom));
 
         if (!haySolapamiento) {
           encontrado = true;
@@ -525,6 +559,22 @@
       if (!encontrado) {
         left = 18;
         top = zonaRect.height - btnRect.height - 18;
+
+        if (btnTalVezLocal) {
+          const rectNoRespaldo = {
+            left: left,
+            top: top,
+            right: left + btnRect.width,
+            bottom: top + btnRect.height
+          };
+
+          const haySolapamientoRespaldo = !(rectNoRespaldo.right < btnTalVezLocal.left || rectNoRespaldo.left > btnTalVezLocal.right || rectNoRespaldo.bottom < btnTalVezLocal.top || rectNoRespaldo.top > btnTalVezLocal.bottom);
+
+          if (haySolapamientoRespaldo) {
+            left = Math.max(zonaRect.width - btnRect.width - 18, 18);
+            top = 18;
+          }
+        }
       }
 
       btnNo.style.left = left + 'px';
