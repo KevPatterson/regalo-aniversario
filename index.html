@@ -295,13 +295,41 @@
 
   </main>
 
+  <audio id="cancion-fondo" loop preload="auto" type="audio/mpeg" src="audio\Desde Que Te Tengo - Carín León (320).mp3" hidden></audio>
+
   <div id="musica-toggle" onclick="toggleMusica()" title="Música">
-    <svg id="icono-musica" viewBox="0 0 24 24"><path d="M9 18V5l12-2v13M9 18a3 3 0 1 1-6 0 3 3 0 0 1 6 0zm12-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" fill="none" stroke-width="1.5" stroke="currentColor"/></svg>
+    <svg id="icono-musica" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>
   </div>
 
   <script>
     function abrir(){
       document.getElementById('entrada').classList.add('abierto');
+
+      if (audioFondo) {
+        try {
+          const intento = audioFondo.play();
+          if (intento && typeof intento.then === 'function') {
+            intento
+              .then(() => {
+                sonando = true;
+                actualizarIconoMusica();
+              })
+              .catch(() => {
+                console.warn('La reproducción automática se bloqueó; el usuario puede activarla desde el botón de música.');
+                sonando = false;
+                actualizarIconoMusica();
+              });
+          } else {
+            sonando = true;
+            actualizarIconoMusica();
+          }
+        } catch (error) {
+          console.warn('La reproducción automática no pudo iniciarse:', error);
+          sonando = false;
+          actualizarIconoMusica();
+        }
+      }
+
       setTimeout(()=>{
         document.getElementById('entrada').style.display='none';
         document.getElementById('contenido').classList.add('visible');
@@ -312,9 +340,56 @@
       document.getElementById('revelacion-texto').classList.add('visible');
     }
 
-    function toggleMusica(){
-      alert('Aquí conectas tu archivo de audio (ver notas de personalización).');
+    const audioFondo = document.getElementById('cancion-fondo');
+    let sonando = false;
+
+    function actualizarIconoMusica(){
+      const icono = document.getElementById('icono-musica');
+      if (!icono) return;
+
+      if (sonando) {
+        icono.innerHTML = '<path d="M8 5h3v14H8zm5 0h3v14h-3z" fill="currentColor"/>';
+      } else {
+        icono.innerHTML = '<path d="M8 5v14l11-7z" fill="currentColor"/>';
+      }
     }
+
+    if (audioFondo) {
+      audioFondo.addEventListener('error', () => {
+        console.warn('No se pudo cargar la canción de fondo.');
+        sonando = false;
+        actualizarIconoMusica();
+      });
+
+      audioFondo.addEventListener('ended', () => {
+        sonando = false;
+        actualizarIconoMusica();
+      });
+    }
+
+    function toggleMusica(){
+      if (!audioFondo) {
+        console.warn('No existe el elemento de audio para la canción de fondo.');
+        return;
+      }
+
+      if (!sonando) {
+        try {
+          audioFondo.play();
+          sonando = true;
+        } catch (error) {
+          console.warn('La reproducción de la música tuvo un problema:', error);
+          sonando = false;
+        }
+      } else {
+        audioFondo.pause();
+        sonando = false;
+      }
+
+      actualizarIconoMusica();
+    }
+
+    actualizarIconoMusica();
 
     // --- Contador de tiempo juntos ---
     // En JavaScript, enero = 0 y diciembre = 11. Por eso noviembre es 10.
