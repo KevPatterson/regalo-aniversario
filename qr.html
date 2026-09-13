@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Generar QR</title>
-<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
   body{
     font-family:sans-serif;background:#1c1730;color:#f4ece2;
@@ -20,16 +20,21 @@
     padding:12px 26px;font-size:14px;border:1px solid #c1666b;background:none;
     color:#e8a598;border-radius:4px;cursor:pointer;margin-bottom:24px;
   }
-  #qr-canvas{background:#fff;padding:16px;border-radius:8px;}
+  #qr-canvas{
+    background:#fff;padding:16px;border-radius:8px;
+    width:260px;height:260px;
+    display:flex;align-items:center;justify-content:center;
+  }
+  #qr-canvas canvas, #qr-canvas img{display:block;max-width:100%;height:auto;}
   a.descargar{color:#e8a598;font-size:13px;margin-top:14px;display:inline-block;}
 </style>
 </head>
 <body>
   <h2>Generador de QR</h2>
-  <p style="opacity:0.6;font-size:13px;max-width:340px;">Pega aquí el link de tu página (el que te dio GitHub Pages) y genera el QR para imprimir o compartir.</p>
+  <p style="opacity:0.6;font-size:13px;max-width:340px;">Pega aquí el link de tu página (el que te dio GitHub Pages, Netlify, Vercel u otro servicio de hosting) y genera el QR para imprimir o compartir.</p>
   <input id="url-input" type="text" placeholder="https://github.com/KevPatterson/regalo-aniversario">
   <button onclick="generar()">Generar QR</button>
-  <canvas id="qr-canvas"></canvas>
+  <div id="qr-canvas"></div>
   <a class="descargar" id="link-descarga" style="display:none;" download="qr-regalo.png">Descargar imagen</a>
 
   <script>
@@ -37,12 +42,22 @@
       const url = document.getElementById('url-input').value.trim();
       if(!url) return;
       const canvas = document.getElementById('qr-canvas');
-      QRCode.toCanvas(canvas, url, { width: 260, margin: 2, color: { dark:'#1c1730', light:'#ffffff' } }, function(error){
-        if(error) console.error(error);
-        const link = document.getElementById('link-descarga');
-        link.href = canvas.toDataURL('image/png');
-        link.style.display = 'inline-block';
+      canvas.innerHTML = '';
+      new QRCode(canvas, {
+        text: url,
+        width: 1024,
+        height: 1024,
+        colorDark: '#1c1730',
+        colorLight: '#ffffff',
+        correctLevel: QRCode.CorrectLevel.M
       });
+
+      const renderedCanvas = canvas.querySelector('canvas');
+      const link = document.getElementById('link-descarga');
+      if (renderedCanvas) {
+        link.href = renderedCanvas.toDataURL('image/png');
+        link.style.display = 'inline-block';
+      }
     }
   </script>
 </body>
