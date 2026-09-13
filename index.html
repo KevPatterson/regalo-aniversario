@@ -167,6 +167,41 @@
   }
   .revelacion.visible{display:block;animation:aparecer 0.7s ease;}
 
+  #zona-botones,
+  #mensaje-burla{
+    display:none;
+  }
+
+  #zona-botones.visible,
+  #mensaje-burla.visible{
+    display:flex;animation:aparecer 0.4s ease;
+  }
+
+  .zona-botones{
+    position:relative;height:190px;width:100%;margin-top:20px;
+  }
+  .btn-si,
+  .btn-no{
+    position:absolute;min-width:110px;padding:14px 28px;border-radius:999px;
+    border:1px solid var(--linea);font-family:'Jost',sans-serif;font-size:15px;
+    letter-spacing:0.5px;cursor:pointer;touch-action:manipulation;
+    box-shadow:0 8px 18px rgba(0,0,0,0.12);
+  }
+  .btn-si{
+    left:50%;top:16px;transform:translateX(-50%);
+    background:linear-gradient(180deg, var(--vino), var(--noche));
+    color:var(--crema);border-color:rgba(244,236,226,0.2);
+  }
+  .btn-no{
+    left:50%;top:104px;transform:translateX(-50%);
+    background:rgba(255,255,255,0.03);color:var(--crema);border-color:var(--linea);
+    transition:left 0.25s ease, top 0.25s ease;
+  }
+  #mensaje-burla{
+    margin-top:12px;text-align:center;font-size:12px;color:var(--lila);
+    letter-spacing:0.5px;opacity:0.9;min-height:18px;
+  }
+
   /* ---- MUSICA FLOTANTE ---- */
   #musica-toggle{
     position:fixed;bottom:20px;right:20px;
@@ -258,7 +293,7 @@
           </div>
           <div class="evento">
             <div class="fecha">4-10-2025</div>
-            <h2>Momentos especiales</h3>
+            <h3>Momentos especiales</h3>
             <p>la primera foto q publicamos juntos.</p>
             <div class="evento-img"><img src="fotos/photo_3_2026-09-12_19-54-50.jpg" alt="La primera foto que publicamos juntos"></div>
           </div>
@@ -294,9 +329,15 @@
         <div class="titulo-seccion">No toques este botón</div>
         <button class="btn-sorpresa" onclick="revelar()">tócalo de todas formas</button>
         <div class="revelacion" id="revelacion-texto">
-          Aceptas ser mi novio de nuevo? <br>
+          ¿Aceptas ser mi novio de nuevo? <br>
           <strong>🤍✨🤎</strong>
         </div>
+
+        <div id="zona-botones" class="zona-botones">
+          <button class="btn-si" type="button" onclick="responderSi()">Sí</button>
+          <button id="btn-no" class="btn-no" type="button">No</button>
+        </div>
+        <p id="mensaje-burla">¡ni lo intentes! 🏃💨</p>
       </div>
     </section>
 
@@ -304,7 +345,8 @@
 
   </main>
 
-  <audio id="cancion-fondo" loop preload="auto" type="audio/mpeg" src="audio\Desde Que Te Tengo - Carín León (320).mp3" hidden></audio>
+  <!-- Si el archivo mp3 pudiera renombrarse sin espacios ni acentos, por ejemplo "desde-que-te-tengo.mp3", evitaría problemas de carga en navegadores y en rutas web. -->
+  <audio id="cancion-fondo" loop preload="auto" type="audio/mpeg" src="audio/Desde%20Que%20Te%20Tengo%20-%20Car%C3%ADn%20Le%C3%B3n%20(320).mp3" hidden></audio>
 
   <div id="musica-toggle" onclick="toggleMusica()" title="Música">
     <svg id="icono-musica" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>
@@ -347,7 +389,76 @@
 
     function revelar(){
       document.getElementById('revelacion-texto').classList.add('visible');
+      document.getElementById('zona-botones').classList.add('visible');
+      document.getElementById('mensaje-burla').classList.add('visible');
     }
+
+    const frasesBurla = [
+      '¡ni lo intentes! 🏃💨',
+      'no tan rápido...',
+      'ese botón no existe para ti 😌',
+      'inténtalo de nuevo 💙'
+    ];
+
+    function cambiarMensajeBurla(){
+      const mensaje = document.getElementById('mensaje-burla');
+      if (!mensaje) return;
+      const frase = frasesBurla[Math.floor(Math.random() * frasesBurla.length)];
+      mensaje.textContent = frase;
+    }
+
+    function moverBotonNo(){
+      const zona = document.getElementById('zona-botones');
+      const btnNo = document.getElementById('btn-no');
+      if (!zona || !btnNo) return;
+
+      const zonaRect = zona.getBoundingClientRect();
+      const btnRect = btnNo.getBoundingClientRect();
+      const maxLeft = Math.max(zonaRect.width - btnRect.width, 0);
+      const maxTop = Math.max(zonaRect.height - btnRect.height, 0);
+
+      const left = Math.random() * maxLeft;
+      const top = Math.random() * maxTop;
+
+      btnNo.style.left = left + 'px';
+      btnNo.style.top = top + 'px';
+      btnNo.style.transform = 'none';
+      cambiarMensajeBurla();
+    }
+
+    function responderSi(){
+      // aquí va la reacción al aceptar
+      alert('Sabía que ibas a decir que si ;)');
+    }
+
+    const btnNo = document.getElementById('btn-no');
+    if (btnNo) {
+      btnNo.addEventListener('touchstart', function(evento){
+        const zona = document.getElementById('zona-botones');
+        if (!zona || !zona.classList.contains('visible')) return;
+
+        evento.preventDefault();
+        moverBotonNo();
+      }, { passive: false });
+    }
+
+    document.addEventListener('touchmove', function(evento){
+      const zona = document.getElementById('zona-botones');
+      if (!zona || !zona.classList.contains('visible')) return;
+      if (!btnNo) return;
+
+      const toque = evento.touches && evento.touches[0];
+      if (!toque) return;
+
+      const rect = btnNo.getBoundingClientRect();
+      const centroX = rect.left + (rect.width / 2);
+      const centroY = rect.top + (rect.height / 2);
+      const distancia = Math.hypot(toque.clientX - centroX, toque.clientY - centroY);
+
+      if (distancia < 90) {
+        moverBotonNo();
+      }
+    }, { passive: true });
 
     const audioFondo = document.getElementById('cancion-fondo');
     let sonando = false;
