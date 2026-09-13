@@ -189,7 +189,7 @@
 
     <section id="contador">
       <div class="max">
-        <div class="kicker">DESDE EL [FECHA DE ANIVERSARIO]</div>
+        <div class="kicker">DESDE EL 6-11-2025</div>
         <div class="titulo-seccion">Llevamos juntos</div>
         <div class="contador-caja">
           <div><div class="contador-num" id="dias">000</div><div class="contador-lbl">DÍAS</div></div>
@@ -236,7 +236,7 @@
         <div class="titulo-seccion">Cómo empezó todo</div>
         <div class="linea-tiempo">
           <div class="evento">
-            <div class="fecha">[FECHA]</div>
+            <div class="fecha">3-9-2025</div>
             <h3>El primer día</h3>
             <p>Esta fue nuestra primera conversación por whatshapp para planear nuestra primera cita...</p>
             <div class="evento-img"><img src="fotos/photo_2_2026-09-12_16-29-28.jpg" alt="Primera conversación por WhatsApp"></div>
@@ -249,15 +249,13 @@
           </div>
           <div class="evento">
             <div class="fecha">[FECHA]</div>
-            <h3>La primera cita</h3>
-            <p>Placeholder: dónde fueron, qué recuerdas de ese día.</p>
-          </div>
-          <div class="evento">
-            <div class="fecha">[FECHA]</div>
-            <h3>Momentos especiales</h3>
+            <h2>Momentos especiales</h3>
             <p>la primera foto q publicamos juntos.</p>
             <div class="evento-img"><img src="fotos/photo_3_2026-09-12_19-54-50.jpg" alt="La primera foto que publicamos juntos"></div>
-            <p>el día que me pediste ser tu novia <3.</p>
+          </div>
+          <div class="evento">
+            <div class="fecha">6-11-2025</div>
+            <h3>El día que me pediste ser tu novia <3</h3>
             <div class="evento-img"><img src="fotos/photo_1_2026-09-12_19-54-50.jpg" alt="Momento especial"></div>
           </div>
           <div class="evento">
@@ -319,8 +317,8 @@
     }
 
     // --- Contador de tiempo juntos ---
-    // Cambia esta fecha por la fecha de aniversario real: año, mes(0-11), día, hora, minuto
-    const inicio = new Date(2023, 0, 1, 0, 0);
+    // En JavaScript, enero = 0 y diciembre = 11. Por eso noviembre es 10.
+    const inicio = new Date(2025, 10, 6, 0, 0); // 6-11-2025
 
     function actualizarContador(){
       const ahora = new Date();
