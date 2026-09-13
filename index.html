@@ -204,6 +204,10 @@
     background:rgba(255,255,255,0.03);color:var(--crema);border-color:var(--linea);
     transition:left 0.25s ease, top 0.25s ease;
   }
+  #btn-no.desvanecer{
+    opacity:0;transform:scale(0.88);pointer-events:none;
+    transition:opacity 0.6s ease, transform 0.6s ease;
+  }
   #mensaje-burla{
     margin-top:16px;text-align:center;font-size:15px;color:var(--crema);
     letter-spacing:0.5px;opacity:0.95;min-height:22px;
@@ -359,7 +363,7 @@
         <p id="mensaje-burla">¡ni lo intentes! 🏃💨</p>
         <div id="mensaje-si" aria-live="polite">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7.5-4.45-10.5-9.03C.65 9.7 2.04 5 6.47 5c2.2 0 3.42 1.18 4.12 2.16C11.3 6.18 12.52 5 14.73 5c4.43 0 5.82 4.7 4.97 6.97C19.5 16.55 12 21 12 21Z"/></svg>
-          Sabía que dirías que sí 💙
+          Sabía que dirías que sí 😎
         </div>
       </div>
     </section>
@@ -460,12 +464,15 @@
     ];
 
     let indiceBurla = 0;
+    let esUltimaOportunidad = false;
+    let yaSeRindio = false;
 
     function cambiarMensajeBurla(){
       const mensaje = document.getElementById('mensaje-burla');
       if (!mensaje) return;
 
       const frase = frasesBurla[indiceBurla % frasesBurla.length];
+      esUltimaOportunidad = (frase === 'última oportunidad...');
       indiceBurla += 1;
       mensaje.textContent = frase;
       mensaje.classList.add('visible');
@@ -529,6 +536,29 @@
       }
     }
 
+    function rendirseBotonNo(){
+      if (yaSeRindio) return;
+      yaSeRindio = true;
+      esUltimaOportunidad = false;
+
+      const btnNo = document.getElementById('btn-no');
+      const mensaje = document.getElementById('mensaje-burla');
+      if (!btnNo || !mensaje) return;
+
+      mensaje.textContent = 'te avisé 😌';
+      mensaje.classList.add('visible');
+      btnNo.classList.add('desvanecer');
+
+      setTimeout(() => {
+        btnNo.style.display = 'none';
+        btnNo.disabled = true;
+        btnNo.setAttribute('aria-hidden', 'true');
+
+        mensaje.textContent = 'te avisé 😌';
+        mensaje.classList.add('visible');
+      }, 600);
+    }
+
     function responderSi(){
       const zona = document.getElementById('zona-botones');
       const burla = document.getElementById('mensaje-burla');
@@ -546,6 +576,11 @@
       btnNo.addEventListener('click', function(evento){
         const zona = document.getElementById('zona-botones');
         if (!zona || !zona.classList.contains('visible')) return;
+        if (esUltimaOportunidad) {
+          evento.preventDefault();
+          rendirseBotonNo();
+          return;
+        }
 
         evento.preventDefault();
         moverBotonNo(true);
@@ -554,6 +589,11 @@
       btnNo.addEventListener('touchstart', function(evento){
         const zona = document.getElementById('zona-botones');
         if (!zona || !zona.classList.contains('visible')) return;
+        if (esUltimaOportunidad) {
+          evento.preventDefault();
+          rendirseBotonNo();
+          return;
+        }
 
         evento.preventDefault();
         moverBotonNo(true);
@@ -564,6 +604,10 @@
       const zona = document.getElementById('zona-botones');
       if (!zona || !zona.classList.contains('visible')) return;
       if (!btnNo) return;
+      if (esUltimaOportunidad) {
+        rendirseBotonNo();
+        return;
+      }
 
       const toque = evento.touches && evento.touches[0];
       if (!toque) return;
